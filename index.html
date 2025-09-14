@@ -45,7 +45,7 @@
             <div class="w-64 bg-white rounded-lg shadow-sm p-4">
                 <nav class="space-y-2">
                     <button class="nav-item active w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left" onclick="showTab('overview')"><i data-lucide="home" class="w-5 h-5"></i><span class="font-medium">Visão Geral</span></button>
-                    <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('systems')"><i data-lucide="wrench" class="w-5 h-5"></i><span class="font-medium">Implementos</span></button>
+                    <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('implementos')"><i data-lucide="wrench" class="w-5 h-5"></i><span class="font-medium">Implementos</span></button>
                     <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('problems')"><i data-lucide="alert-triangle" class="w-5 h-5"></i><span class="font-medium">Problemas</span></button>
                     <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('history')"><i data-lucide="bar-chart-3" class="w-5 h-5"></i><span class="font-medium">Histórico</span></button>
                     <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('checklist')"><i data-lucide="file-text" class="w-5 h-5"></i><span class="font-medium">Checklist</span></button>
@@ -110,11 +110,13 @@
                     </div>
                     <div class="bg-white rounded-lg shadow-sm p-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Evolução das Verificações</h3>
-                        <canvas id="monitoring-chart"></canvas>
+                        <div class="relative h-96">
+                            <canvas id="monitoring-chart"></canvas>
+                        </div>
                     </div>
                 </div>
                 
-                <div id="tab-systems" class="tab-content hidden space-y-6">
+                <div id="tab-implementos" class="tab-content hidden space-y-6">
                     <h2 class="text-2xl font-bold text-gray-900">Implementos e Pendências</h2>
                     <div id="container-implementos" class="bg-white rounded-lg shadow-sm">
                         </div>
@@ -320,13 +322,16 @@
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
-                item.classList.add('text-gray-700');
             });
             event.currentTarget.classList.add('active');
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Define a aba inicial como Visão Geral
+            showTab('overview');
+            // Inicializa os ícones
             lucide.createIcons();
+            // Busca os dados e inicia os intervalos
             fetchDataAndUpdateDashboard();
             setInterval(fetchDataAndUpdateDashboard, 10000);
             updateTime();
@@ -335,5 +340,3 @@
     </script>
 </body>
 </html>
-
-
