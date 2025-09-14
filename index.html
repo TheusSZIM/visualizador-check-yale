@@ -387,6 +387,9 @@
             updateTime();
             setInterval(updateTime, 1000);
             initChart(); // Chart data can also be updated inside fetchDataAndUpdateDashboard
+        
+ fetchData();
+            setInterval(fetchData, 10000); // Atualiza a cada 30 segundos
         });
     </script>
 </body>
