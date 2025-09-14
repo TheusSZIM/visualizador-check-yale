@@ -41,18 +41,18 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-4 py-6">
-        <div class="flex space-x-6">
-            <div class="w-64 bg-white rounded-lg shadow-sm p-4">
+        <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
+            <div class="w-full md:w-64 bg-white rounded-lg shadow-sm p-4">
                 <nav class="space-y-2">
-                    <button class="nav-item active w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left" onclick="showTab('overview')"><i data-lucide="home" class="w-5 h-5"></i><span class="font-medium">Visão Geral</span></button>
-                    <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('implementos')"><i data-lucide="wrench" class="w-5 h-5"></i><span class="font-medium">Implementos</span></button>
-                    <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('problems')"><i data-lucide="alert-triangle" class="w-5 h-5"></i><span class="font-medium">Problemas</span></button>
-                    <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('history')"><i data-lucide="bar-chart-3" class="w-5 h-5"></i><span class="font-medium">Histórico</span></button>
-                    <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('checklist')"><i data-lucide="file-text" class="w-5 h-5"></i><span class="font-medium">Checklist</span></button>
+                    <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left" onclick="showTab('overview', event)"><i data-lucide="home" class="w-5 h-5"></i><span class="font-medium">Visão Geral</span></button>
+                    <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('implementos', event)"><i data-lucide="wrench" class="w-5 h-5"></i><span class="font-medium">Implementos</span></button>
+                    <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('problems', event)"><i data-lucide="alert-triangle" class="w-5 h-5"></i><span class="font-medium">Problemas</span></button>
+                    <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('history', event)"><i data-lucide="bar-chart-3" class="w-5 h-5"></i><span class="font-medium">Histórico</span></button>
+                    <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('checklist', event)"><i data-lucide="file-text" class="w-5 h-5"></i><span class="font-medium">Checklist</span></button>
                 </nav>
             </div>
             <div class="flex-1">
-                <div id="tab-overview" class="tab-content space-y-6">
+                <div id="tab-overview" class="tab-content hidden space-y-6">
                     <div class="gradient-bg rounded-lg shadow-lg p-6 text-white">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-4">
@@ -118,8 +118,7 @@
                 
                 <div id="tab-implementos" class="tab-content hidden space-y-6">
                     <h2 class="text-2xl font-bold text-gray-900">Implementos e Pendências</h2>
-                    <div id="container-implementos" class="bg-white rounded-lg shadow-sm">
-                        </div>
+                    <div id="container-implementos" class="bg-white rounded-lg shadow-sm"></div>
                 </div>
 
                 <div id="tab-problems" class="tab-content hidden space-y-6">
@@ -138,34 +137,7 @@
                 <div id="tab-checklist" class="tab-content hidden space-y-6">
                     <h2 class="text-2xl font-bold text-gray-900">Checklist Yale MR16</h2>
                     <div class="bg-white rounded-lg shadow-sm p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center space-x-4">
-                                <i data-lucide="qr-code" class="w-8 h-8 text-blue-600"></i>
-                                <div>
-                                    <h3 class="text-lg font-semibold text-gray-900">Acesso ao Formulário</h3>
-                                    <p class="text-gray-600">Escaneie o QR Code para iniciar verificação</p>
-                                </div>
-                            </div>
-                            <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">Iniciar Verificação</button>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-4">
-                                <h4 class="font-semibold text-gray-900">Itens Críticos</h4>
-                                <div class="space-y-2">
-                                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i><span class="text-gray-700">Nível de carga da bateria</span></div>
-                                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i><span class="text-gray-700">Sistema hidráulico</span></div>
-                                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i><span class="text-gray-700">Freios de serviço</span></div>
-                                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i><span class="text-gray-700">Luzes e sinalizações</span></div>
-                                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i><span class="text-gray-700">Garfos e proteção</span></div>
-                                </div>
-                            </div>
-                            <div class="space-y-4">
-                                <h4 class="font-semibold text-gray-900">Tempo Médio</h4>
-                                <div class="text-3xl font-bold text-blue-600">4:30</div>
-                                <p class="text-gray-600">minutos por verificação</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -240,15 +212,7 @@
                     if (statusText.includes('pendente')) statusColor = 'bg-yellow-100 text-yellow-800';
                     else if (statusText.includes('instalado')) statusColor = 'bg-green-100 text-green-800';
                     else if (statusText.includes('manutenção')) statusColor = 'bg-blue-100 text-blue-800';
-                    
-                    const html = `
-                        <div class="flex items-start justify-between p-4 border-b last:border-b-0">
-                            <div>
-                                <p class="font-semibold text-gray-900">${item.implemento}</p>
-                                <p class="text-sm text-gray-600">${item.observação || ''}</p>
-                            </div>
-                            <div class="px-3 py-1 rounded-full text-xs font-medium ${statusColor}">${item.status}</div>
-                        </div>`;
+                    const html = `<div class="flex items-start justify-between p-4 border-b last:border-b-0"><di><div><p class="font-semibold text-gray-900">${item.implemento}</p><p class="text-sm text-gray-600">${item.observação || ''}</p></div><div class="px-3 py-1 rounded-full text-xs font-medium ${statusColor}">${item.status}</div></div>`;
                     container.insertAdjacentHTML('beforeend', html);
                 });
             } else {
@@ -317,21 +281,31 @@
             document.getElementById('current-time').textContent = new Date().toLocaleTimeString('pt-BR');
         }
 
-        function showTab(tabName) {
+        function showTab(tabName, event) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            const tabToShow = document.getElementById(`tab-${tabName}`);
+            if (tabToShow) tabToShow.classList.remove('hidden');
+
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
+                item.classList.add('text-gray-700');
             });
-            event.currentTarget.classList.add('active');
+
+            if (event) {
+                event.currentTarget.classList.add('active');
+                event.currentTarget.classList.remove('text-gray-700');
+            } else {
+                const activeNavItem = document.querySelector(`.nav-item[onclick*="'${tabName}'"]`);
+                if (activeNavItem) {
+                    activeNavItem.classList.add('active');
+                    activeNavItem.classList.remove('text-gray-700');
+                }
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Define a aba inicial como Visão Geral
             showTab('overview');
-            // Inicializa os ícones
             lucide.createIcons();
-            // Busca os dados e inicia os intervalos
             fetchDataAndUpdateDashboard();
             setInterval(fetchDataAndUpdateDashboard, 10000);
             updateTime();
