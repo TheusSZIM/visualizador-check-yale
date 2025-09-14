@@ -125,7 +125,6 @@
                                 <i data-lucide="check-circle" class="w-8 h-8 text-green-500"></i>
                             </div>
                         </div>
-
                         <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-500">
                             <div class="flex items-center justify-between">
                                 <div>
@@ -136,7 +135,6 @@
                                 <i data-lucide="battery" class="w-8 h-8 text-blue-500"></i>
                             </div>
                         </div>
-
                         <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-yellow-500">
                             <div class="flex items-center justify-between">
                                 <div>
@@ -147,7 +145,6 @@
                                 <i data-lucide="alert-triangle" class="w-8 h-8 text-yellow-500"></i>
                             </div>
                         </div>
-
                         <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500">
                             <div class="flex items-center justify-between">
                                 <div>
@@ -162,97 +159,29 @@
 
                     <div class="bg-white rounded-lg shadow-sm p-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Monitoramento em Tempo Real</h3>
-                        <canvas id="monitoring-chart" width="800" height="300"></canvas>
+                        <canvas id="monitoring-chart"></canvas>
                     </div>
                 </div>
 
                 <div id="tab-systems" class="tab-content hidden space-y-6">
                     <h2 class="text-2xl font-bold text-gray-900">Sistemas da Yale MR16</h2>
-                    
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="bg-white rounded-lg shadow-sm p-6">
-                            <div class="flex items-center space-x-3 mb-4">
-                                <i data-lucide="battery" class="w-6 h-6 text-blue-600"></i>
-                                <h3 class="text-lg font-semibold text-gray-900">Sistema Elétrico</h3>
-                            </div>
-                            <div class="space-y-4">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">Nível de Carga</span>
-                                    <span class="font-semibold text-gray-900" id="sys-eletrico-carga">--%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="progress-bar bg-blue-600 h-2 rounded-full" id="sys-eletrico-cargabar" style="width: 0%"></div>
-                                </div>
-                                <div class="grid grid-cols-2 gap-4 text-sm">
-                                    <div>
-                                        <span class="text-gray-500">Voltagem:</span>
-                                        <span class="font-medium ml-2" id="sys-eletrico-voltagem">--V</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-500">Temperatura:</span>
-                                        <span class="font-medium ml-2" id="sys-eletrico-temp">--°C</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-500">Tempo Restante:</span>
-                                        <span class="font-medium ml-2" id="sys-eletrico-tempo">--h</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-500">Ciclos:</span>
-                                        <span class="font-medium ml-2" id="sys-eletrico-ciclos">--</span>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-
-                        <div class="bg-white rounded-lg shadow-sm p-6">
-                            <div class="flex items-center space-x-3 mb-4">
-                                <i data-lucide="droplets" class="w-6 h-6 text-blue-600"></i>
-                                <h3 class="text-lg font-semibold text-gray-900">Sistema Hidráulico</h3>
-                            </div>
-                            <div class="space-y-4">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">Nível do Óleo</span>
-                                    <span class="font-semibold text-gray-900" id="sys-hid-oleo">--%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="progress-bar bg-yellow-500 h-2 rounded-full" id="sys-hid-oleobar" style="width: 0%"></div>
-                                </div>
-                                <div class="grid grid-cols-2 gap-4 text-sm">
-                                    <div>
-                                        <span class="text-gray-500">Pressão:</span>
-                                        <span class="font-medium ml-2" id="sys-hid-pressao">-- bar</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-500">Temperatura:</span>
-                                        <span class="font-medium ml-2" id="sys-hid-temp">--°C</span>
-                                    </div>
-                                    <div class="col-span-2">
-                                        <span class="text-gray-500">Última Troca:</span>
-                                        <span class="font-medium ml-2" id="sys-hid-troca">--</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div id="tab-problems" class="tab-content hidden space-y-6">
                     <h2 class="text-2xl font-bold text-gray-900">Problemas Detectados</h2>
-                    <div id="container-problemas" class="grid grid-cols-1 gap-4">
-                        </div>
+                    <div id="container-problemas" class="grid grid-cols-1 gap-4"></div>
                 </div>
 
                 <div id="tab-history" class="tab-content hidden space-y-6">
                     <h2 class="text-2xl font-bold text-gray-900">Histórico de Verificações</h2>
                     <div class="bg-white rounded-lg shadow-sm p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold text-gray-900">Verificações Recentes</h3>
-                        </div>
-                        <div id="container-historico" class="space-y-4">
-                           </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Verificações Recentes</h3>
+                        <div id="container-historico" class="space-y-4"></div>
                     </div>
                 </div>
-
+                
                 <div id="tab-checklist" class="tab-content hidden space-y-6">
                     </div>
             </div>
@@ -260,8 +189,8 @@
     </div>
 
     <script>
-        // URL da sua implantação final e correta.
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw3p-XvUwWvMc9yL8ciWJcpLnkwnDKzYoa23l6S3Jr2Ios_kMmKOssGtyLoXarTpNCEMQ/exec';
+        let monitoringChart = null; // Variável global para o gráfico
 
         async function fetchDataAndUpdateDashboard() {
             try {
@@ -271,7 +200,7 @@
                 const data = await response.json();
                 if (data.error) throw new Error(`Erro no script do Google: ${data.error}`);
 
-                // --- ATUALIZAR ABA VISÃO GERAL ---
+                // --- ATUALIZAR DADOS VISUAIS ---
                 const vg = data.visaoGeral;
                 document.getElementById('header-nome').textContent = vg.NomeEquipamento || 'N/A';
                 document.getElementById('header-serie').textContent = `Série: ${vg.Serie || 'N/A'}`;
@@ -284,11 +213,11 @@
                 statusBadge.className = 'px-3 py-1 rounded-full text-sm font-medium ';
                 if (vg.StatusGeral === 'OPERACIONAL') {
                     statusBadge.classList.add('text-green-600', 'bg-green-100');
+                    statusBadge.classList.remove('alert-blink');
                 } else {
                     statusBadge.classList.add('text-yellow-800', 'bg-yellow-100', 'alert-blink');
                 }
 
-                // Cards
                 document.getElementById('card-verificacao-hora').textContent = vg.UltimaVerificacao_Horario || '--:--';
                 document.getElementById('card-verificacao-nome').textContent = vg.UltimaVerificacao_Nome || 'N/A';
                 document.getElementById('card-bateria-nivel').textContent = data.sistemas.Eletrico_NivelCarga || '--%';
@@ -298,63 +227,80 @@
                 document.getElementById('card-conformidade-perc').textContent = vg.Conformidade_Percentual || '--%';
                 document.getElementById('card-conformidade-itens').textContent = vg.Conformidade_Itens || 'N/A';
                 
-                if (vg.ProblemasAtivos_Total > 0) {
-                    document.getElementById('card-problemas-total').classList.add('alert-blink');
-                } else {
-                    document.getElementById('card-problemas-total').classList.remove('alert-blink');
-                }
+                const cardProblemas = document.getElementById('card-problemas-total');
+                if (vg.ProblemasAtivos_Total > 0) cardProblemas.classList.add('alert-blink');
+                else cardProblemas.classList.remove('alert-blink');
 
-                // --- ATUALIZAR ABA SISTEMAS ---
-                const s = data.sistemas;
-                document.getElementById('sys-eletrico-carga').textContent = s.Eletrico_NivelCarga || '--%';
-                document.getElementById('sys-eletrico-cargabar').style.width = s.Eletrico_NivelCarga || '0%';
-                document.getElementById('sys-eletrico-voltagem').textContent = s.Eletrico_Voltagem || 'N/A';
-                document.getElementById('sys-eletrico-temp').textContent = s.Eletrico_Temperatura || 'N/A';
-                document.getElementById('sys-eletrico-tempo').textContent = s.Eletrico_TempoRestante || 'N/A';
-                document.getElementById('sys-eletrico-ciclos').textContent = s.Eletrico_Ciclos || 'N/A';
-                
-                document.getElementById('sys-hid-oleo').textContent = s.Hidraulico_NivelOleo || '--%';
-                document.getElementById('sys-hid-oleobar').style.width = s.Hidraulico_NivelOleo || '0%';
-                document.getElementById('sys-hid-pressao').textContent = s.Hidraulico_Pressao || 'N/A';
-                document.getElementById('sys-hid-temp').textContent = s.Hidraulico_Temperatura || 'N/A';
-                document.getElementById('sys-hid-troca').textContent = s.Hidraulico_UltimaTroca || 'N/A';
-                
-                // --- ATUALIZAR ABA PROBLEMAS ---
-                const problemasContainer = document.getElementById('container-problemas');
-                problemasContainer.innerHTML = '';
-                if(data.problemas && data.problemas.length > 0) {
-                    data.problemas.forEach(p => {
-                        const severidadeClass = p.Severidade === 'ALTA' ? 'border-red-500' : 'border-yellow-500';
-                        const severidadeBg = p.Severidade === 'ALTA' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800';
-                        const problemaHtml = `<div class="bg-white rounded-lg shadow-sm p-6 border-l-4 ${severidadeClass}"><div class="flex items-start space-x-4"><i data-lucide="alert-triangle" class="w-5 h-5 text-yellow-600 mt-1"></i><div class="flex-1"><div class="flex items-center justify-between mb-2"><h3 class="text-lg font-semibold text-gray-900">${p.Titulo}</h3><div class="px-3 py-1 rounded-full text-sm font-medium ${severidadeBg}">${p.Severidade}</div></div><p class="text-gray-600 mb-3">${p.Descricao}</p><div class="flex items-center justify-between"><div class="text-sm text-gray-500">Detectado em: ${p.DetectadoEm}</div><div class="text-sm font-medium text-blue-600">Ação: ${p.Acao}</div></div></div></div></div>`;
-                        problemasContainer.insertAdjacentHTML('beforeend', problemaHtml);
-                    });
-                } else {
-                    problemasContainer.innerHTML = '<p class="text-gray-600">Nenhum problema detectado.</p>';
-                }
-                
-                // --- ATUALIZAR ABA HISTÓRICO ---
-                const historicoContainer = document.getElementById('container-historico');
-                historicoContainer.innerHTML = '';
-                if(data.historico && data.historico.length > 0) {
-                     data.historico.forEach(h => {
-                        const statusClass = h.Status === 'APROVADO' ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
-                        const historicoHtml = `<div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"><div class="flex items-center space-x-4"><i data-lucide="calendar" class="w-5 h-5 text-gray-600"></i><div><div class="font-medium text-gray-900">${h.Data}</div><div class="text-sm text-gray-600">${h.Responsavel}</div></div></div><div class="text-right"><div class="px-3 py-1 rounded-full text-sm font-medium ${statusClass}">${h.Status}</div><div class="text-sm text-gray-600 mt-1">${h.Conformidade}</div></div></div>`;
-                        historicoContainer.insertAdjacentHTML('beforeend', historicoHtml);
-                    });
-                } else {
-                     historicoContainer.innerHTML = '<p class="text-gray-600">Nenhum histórico encontrado.</p>';
-                }
+                // --- ATUALIZAR GRÁFICO ---
+                updateChart(data.historico);
 
                 console.log('Dashboard atualizado com sucesso!', data);
                 
             } catch (error) {
                 console.error('Falha ao carregar dados do dashboard:', error);
-                // Opcional: Mostrar um erro na tela
                 document.getElementById('header-nome').textContent = "Falha ao carregar";
             } finally {
                 lucide.createIcons();
             }
+        }
+
+        function updateChart(historyData) {
+            const chartData = historyData.slice().reverse(); // Inverte para mostrar do mais antigo ao mais novo
+
+            const labels = chartData.map(item => item.chartLabel);
+            const conformityData = chartData.map(item => item.chartConformity);
+            const problemsData = chartData.map(item => item.chartProblems);
+
+            const ctx = document.getElementById('monitoring-chart').getContext('2d');
+
+            if (monitoringChart) {
+                monitoringChart.destroy();
+            }
+
+            monitoringChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Conformidade (%)',
+                        data: conformityData,
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        yAxisID: 'y',
+                        tension: 0.3
+                    }, {
+                        label: 'Problemas Ativos',
+                        data: problemsData,
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        yAxisID: 'y1',
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: 'Conformidade (%)' },
+                            min: 0,
+                            max: 100
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: { display: true, text: 'Nº de Problemas' },
+                            grid: { drawOnChartArea: false },
+                            min: 0,
+                            ticks: { stepSize: 1 }
+                        }
+                    }
+                }
+            });
         }
 
         function updateTime() {
@@ -364,36 +310,23 @@
         }
 
         function showTab(tabName) {
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.classList.add('hidden'));
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => {
-                item.classList.remove('active');
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active', 'text-gray-900');
                 item.classList.add('text-gray-700');
             });
-            event.target.closest('.nav-item').classList.add('active');
-            event.target.closest('.nav-item').classList.remove('text-gray-700');
-        }
-
-        function initChart() {
-            // Chart.js initialization code remains the same
+            event.currentTarget.classList.add('active', 'text-gray-900');
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             lucide.createIcons();
-            fetchDataAndUpdateDashboard(); 
-            setInterval(fetchDataAndUpdateDashboard, 60000); 
+            fetchDataAndUpdateDashboard();
+            // CORREÇÃO DO ERRO DE DIGITAÇÃO AQUI
+            setInterval(fetchDataAndUpdateDashboard, 10000); // Atualiza a cada 10 segundos
             updateTime();
             setInterval(updateTime, 1000);
-            initChart(); // Chart data can also be updated inside fetchDataAndUpdateDashboard
-        
- fetchData();
-            setInterval(fetchData, 10); // Atualiza a cada 30 segundos
         });
     </script>
 </body>
 </html>
-
-
-
