@@ -295,11 +295,12 @@
             showTab('overview');
             lucide.createIcons();
             fetchDataAndUpdateDashboard();
-            setInterval(fetchDataAndUpdateDashboard, 300000); // 5 minutos
+            setInterval(fetchDataAndUpdateDashboard, 10000); // 5 minutos
             updateTime();
             setInterval(updateTime, 1000);
         });
     </script>
 </body>
 </html>
+
 
