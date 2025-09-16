@@ -141,7 +141,7 @@
                 const firstNavButton = document.querySelector('.nav-item');
                 showTab('overview', { currentTarget: firstNavButton });
                 
-                setInterval(fetchDataAndUpdateDashboard, 300000); // 5 minutos
+                setInterval(fetchDataAndUpdateDashboard, 10000); // 5 minutos
                 updateTime();
                 setInterval(updateTime, 1000);
             } catch (error) {
@@ -263,3 +263,4 @@
     </script>
 </body>
 </html>
+
