@@ -102,7 +102,7 @@
     </div>
 
     <script>
-        const BASE_APP_URL = 'https://script.google.com/macros/s/AKfycbxR6UUa1VWQYpB9-qAsx1HIoSdjK5OeCa96HJNHmcHvc224AhtjaJqk_XhrfKc1Mbpuzw/exec';
+        const BASE_APP_URL = 'https://script.google.com/macros/s/AKfycbwt8Y9VMySdOhtciDmB-Rq7REF1uEzas3fDjjwNmHve4r-TC5lwf7dTjSVfnd5lsZAPng/exec';
         let currentMachine = 'yale';
         let monitoringChart = null;
 
@@ -253,13 +253,14 @@
             switchMachine('yale', { currentTarget: firstMachineButton });
             showTab('overview');
             lucide.createIcons();
-            setInterval(fetchDataAndUpdateDashboard, 10000); // 5 minutos
+            setInterval(fetchDataAndUpdateDashboard, 20000); // 5 minutos
             updateTime();
-            setInterval(updateTime, 10000);
+            setInterval(updateTime, 20000);
         });
     </script>
 </body>
 </html>
+
 
 
 
