@@ -10,15 +10,15 @@
     <style>
         .machine-selector-btn, .nav-item { transition: all 0.2s ease-in-out; }
         .machine-selector-btn:hover, .nav-item:hover { background-color: #f3f4f6; }
-        /* TEMA AZUL (YALE) */
+        /* TEMA AZUL */
         .theme-azul .active { background-color: #2563eb; color: white; }
         .theme-azul .header-bg { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); }
         .theme-azul #machine-icon-bg { background-color: #2563eb; }
-        /* TEMA AMARELO (EXTERNA) */
+        /* TEMA AMARELO */
         .theme-amarelo .active { background-color: #f59e0b; color: white; }
         .theme-amarelo .header-bg { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); }
         .theme-amarelo #machine-icon-bg { background-color: #f59e0b; }
-        /* TEMA VERDE (PALETEIRA) */
+        /* TEMA VERDE */
         .theme-verde .active { background-color: #16a34a; color: white; }
         .theme-verde .header-bg { background: linear-gradient(135deg, #16a34a 0%, #065f46 100%); }
         .theme-verde #machine-icon-bg { background-color: #16a34a; }
@@ -62,7 +62,7 @@
                     <div class="mb-6">
                         <div class="bg-white p-1.5 rounded-lg shadow-sm inline-flex items-center space-x-1">
                              <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('overview', event)"><i data-lucide="home" class="w-4 h-4"></i><span>Visão Geral</span></button>
-                             <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('manutencao', event)"><i data-lucide="tool" class="w-4 h-4"></i><span>Manutenção</span></button>
+                             <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('manutencao', event)"><i data-lucide="wrench" class="w-4 h-4"></i><span>Manutenção</span></button>
                              <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('problems', event)"><i data-lucide="alert-triangle" class="w-4 h-4"></i><span>Problemas</span></button>
                              <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('history', event)"><i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Histórico</span></button>
                              <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('checklist', event)"><i data-lucide="file-text" class="w-4 h-4"></i><span>Checklist</span></button>
@@ -128,10 +128,6 @@
 
         document.addEventListener('DOMContentLoaded', async function() {
             try {
-                // Primeiro, ativa os ícones estáticos da página
-                lucide.createIcons();
-                
-                // Agora busca os dados para criar os botões e carregar a primeira máquina
                 const response = await fetch(`${BASE_APP_URL}`);
                 if (!response.ok) throw new Error("Não foi possível buscar a lista de máquinas.");
                 const data = await response.json();
@@ -153,6 +149,8 @@
             } catch (error) {
                 console.error("Falha na inicialização:", error);
                 document.getElementById('machine-name-subtitle').textContent = "Erro de Conexão";
+            } finally {
+                lucide.createIcons();
             }
         });
 
@@ -190,7 +188,6 @@
                 const data = await response.json();
                 if (data.error) throw new Error(`Erro no script: ${data.error}`);
 
-                // --- ATUALIZAÇÃO DOS ELEMENTOS DA PÁGINA ---
                 const vg = data.visaoGeral;
                 document.getElementById('header-nome').textContent = vg.NomeEquipamento || 'N/A';
                 document.getElementById('header-serie').textContent = `Série: ${vg.Serie || 'N/A'}`;
@@ -229,22 +226,49 @@
         }
         
         function updateManutencaoTab(data) {
-            // ... (função completa)
+            if (!data) return;
+            const progressBar = document.getElementById('progress-bar-oleo');
+            const labelInicio = document.getElementById('progress-label-inicio');
+            const labelFim = document.getElementById('progress-label-fim');
+            const labelStatus = document.getElementById('progress-label-status');
+            const manutencaoTitulo = document.getElementById('manutencao-titulo');
+            
+            manutencaoTitulo.textContent = `Troca de Óleo Hidráulico (a cada ${data.intervalo}h)`;
+            progressBar.style.width = `${data.progresso}%`;
+            progressBar.textContent = `${data.progresso}%`;
+
+            if (data.progresso >= 95) { progressBar.className = 'bg-red-600 h-6 rounded-full flex items-center justify-center text-white text-sm font-medium'; }
+            else if (data.progresso >= 80) { progressBar.className = 'bg-yellow-500 h-6 rounded-full flex items-center justify-center text-white text-sm font-medium'; }
+            else { progressBar.className = 'bg-blue-600 h-6 rounded-full flex items-center justify-center text-white text-sm font-medium'; }
+            
+            const ultimaTroca = data.proximaTroca - data.intervalo;
+            labelInicio.textContent = `Última troca: ${ultimaTroca}h`;
+            labelFim.textContent = `Próxima troca: ${data.proximaTroca}h`;
+            
+            const horasFaltantes = data.proximaTroca - data.horimetroAtual;
+            labelStatus.textContent = `Horímetro atual: ${data.horimetroAtual}h. Faltam ${horasFaltantes > 0 ? horasFaltantes.toFixed(0) : 0}h para a próxima manutenção.`;
         }
-        function updateProblemsList(data) {
-            // ... (função completa)
-        }
-        function updateHistoryList(data) {
-            // ... (função completa)
-        }
-        function updateChart(dailySummary) {
-            // ... (função completa)
-        }
+
+        function updateProblemsList(data) { /* ... */ }
+        function updateHistoryList(data) { /* ... */ }
+        function updateChart(dailySummary) { /* ... */ }
+        // (As funções de update omitidas são longas, mas devem ser incluídas no arquivo final)
+
         function updateTime() {
             document.getElementById('current-time').textContent = new Date().toLocaleTimeString('pt-BR');
         }
+
         function showTab(tabName, event) {
-            // ... (função completa)
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            const tabToShow = document.getElementById(`tab-${tabName}`);
+            if (tabToShow) tabToShow.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-item').forEach(item => { item.classList.remove('active'); item.classList.add('text-gray-700'); });
+            
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+                event.currentTarget.classList.remove('text-gray-700');
+            }
         }
     </script>
 </body>
