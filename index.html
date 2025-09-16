@@ -8,9 +8,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .machine-tab { transition: all 0.2s ease-in-out; }
-        .nav-item { transition: all 0.2s ease-in-out; }
-        .nav-item:hover { background-color: #f3f4f6; }
+        .machine-selector-btn, .nav-item { transition: all 0.2s ease-in-out; }
+        .machine-selector-btn:hover, .nav-item:hover { background-color: #f3f4f6; }
         /* TEMA AZUL (YALE) */
         .theme-yale .active { background-color: #2563eb; color: white; }
         .theme-yale .header-bg { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); }
@@ -49,24 +48,26 @@
         </div>
 
         <div class="max-w-7xl mx-auto px-4 py-6">
-            <div class="mb-6">
-                <div class="bg-white p-1.5 rounded-lg shadow-sm inline-flex items-center space-x-2">
-                    <button class="machine-tab px-4 py-2 rounded-md text-sm font-medium" onclick="switchMachine('yale', event)">Yale MR16</button>
-                    <button class="machine-tab px-4 py-2 rounded-md text-sm font-medium text-gray-600" onclick="switchMachine('externa', event)">Empilhadeira Externa</button>
-                </div>
-            </div>
-
             <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
-                <div id="sidebar-nav" class="w-full md:w-64 bg-white rounded-lg shadow-sm p-4">
+                <div class="w-full md:w-64 bg-white rounded-lg shadow-sm p-4">
+                    <h3 class="text-sm font-semibold text-gray-500 px-4 mb-2">SELECIONE O EQUIPAMENTO</h3>
                     <nav class="space-y-2">
-                        <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left" onclick="showTab('overview', event)"><i data-lucide="home" class="w-5 h-5"></i><span class="font-medium">Visão Geral</span></button>
-                        <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('implementos', event)"><i data-lucide="wrench" class="w-5 h-5"></i><span class="font-medium">Implementos</span></button>
-                        <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('problems', event)"><i data-lucide="alert-triangle" class="w-5 h-5"></i><span class="font-medium">Problemas</span></button>
-                        <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('history', event)"><i data-lucide="bar-chart-3" class="w-5 h-5"></i><span class="font-medium">Histórico</span></button>
-                        <button class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left text-gray-700" onclick="showTab('checklist', event)"><i data-lucide="file-text" class="w-5 h-5"></i><span class="font-medium">Checklist</span></button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('yale', event)">Yale MR16</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('externa', event)">Empilhadeira Externa</button>
                     </nav>
                 </div>
+                
                 <div class="flex-1">
+                    <div class="mb-6">
+                        <div class="bg-white p-1.5 rounded-lg shadow-sm inline-flex items-center space-x-1">
+                             <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('overview', event)"><i data-lucide="home" class="w-4 h-4"></i><span>Visão Geral</span></button>
+                             <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('implementos', event)"><i data-lucide="wrench" class="w-4 h-4"></i><span>Implementos</span></button>
+                             <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('problems', event)"><i data-lucide="alert-triangle" class="w-4 h-4"></i><span>Problemas</span></button>
+                             <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('history', event)"><i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Histórico</span></button>
+                             <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('checklist', event)"><i data-lucide="file-text" class="w-4 h-4"></i><span>Checklist</span></button>
+                        </div>
+                    </div>
+
                     <div id="tab-overview" class="tab-content hidden space-y-6">
                         <div class="header-bg rounded-lg shadow-lg p-6 text-white">
                            <div class="flex items-center justify-between">
@@ -85,17 +86,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            </div>
+                        <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
                         <div class="bg-white rounded-lg shadow-sm p-6">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Resumo dos Últimos 7 Dias</h3>
                             <div class="relative h-96"><canvas id="monitoring-chart"></canvas></div>
                         </div>
                     </div>
-                    <div id="tab-implementos" class="tab-content hidden"><h2 class="text-2xl font-bold text-gray-900">Implementos e Pendências</h2><div id="container-implementos" class="bg-white rounded-lg shadow-sm mt-6"></div></div>
-                    <div id="tab-problems" class="tab-content hidden"><h2 class="text-2xl font-bold text-gray-900">Problemas Detectados</h2><div id="container-problemas" class="grid grid-cols-1 gap-4 mt-6"></div></div>
-                    <div id="tab-history" class="tab-content hidden"><h2 class="text-2xl font-bold text-gray-900">Histórico de Verificações</h2><div id="container-historico" class="space-y-4 mt-6 bg-white rounded-lg shadow-sm p-6"></div></div>
-                    <div id="tab-checklist" class="tab-content hidden"><h2 class="text-2xl font-bold text-gray-900">Checklist</h2><div class="bg-white rounded-lg shadow-sm p-6 mt-6"></div></div>
+                    <div id="tab-implementos" class="tab-content hidden"><h2 class="text-2xl font-bold text-gray-900 mb-4">Implementos e Pendências</h2><div id="container-implementos" class="bg-white rounded-lg shadow-sm"></div></div>
+                    <div id="tab-problems" class="tab-content hidden"><h2 class="text-2xl font-bold text-gray-900 mb-4">Problemas Detectados</h2><div id="container-problemas" class="grid grid-cols-1 gap-4"></div></div>
+                    <div id="tab-history" class="tab-content hidden"><h2 class="text-2xl font-bold text-gray-900 mb-4">Histórico de Verificações</h2><div id="container-historico" class="space-y-4 bg-white rounded-lg shadow-sm p-6"></div></div>
+                    <div id="tab-checklist" class="tab-content hidden"><h2 class="text-2xl font-bold text-gray-900 mb-4">Checklist</h2><div class="bg-white rounded-lg shadow-sm p-6"></div></div>
                 </div>
             </div>
         </div>
@@ -111,12 +111,9 @@
             const newTheme = `theme-${machineName}`;
             document.getElementById('dashboard-container').className = newTheme;
 
-            document.querySelectorAll('.machine-tab').forEach(btn => {
-                btn.classList.remove('active', 'text-gray-900');
-                btn.classList.add('text-gray-600');
-            });
+            document.querySelectorAll('.machine-selector-btn').forEach(btn => btn.classList.remove('active'));
             event.currentTarget.classList.add('active');
-            event.currentTarget.classList.remove('text-gray-600');
+            
             document.getElementById('machine-name-subtitle').textContent = event.currentTarget.textContent;
             fetchDataAndUpdateDashboard();
         }
@@ -148,13 +145,12 @@
                     statusBadge.classList.add('text-yellow-800', 'bg-yellow-100', 'alert-blink');
                 }
 
-                // Recria os cards para garantir que estão limpos
                 const cardsContainer = document.getElementById('cards-container');
                 cardsContainer.innerHTML = `
-                    <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-green-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Última Verificação</div><div class="text-2xl font-bold text-gray-900" id="card-verificacao-hora">${vg.UltimaVerificacao_Horario || '--:--'}</div><div class="text-sm text-gray-600" id="card-verificacao-nome">${vg.UltimaVerificacao_Nome || 'N/A'}</div></div><i data-lucide="check-circle" class="w-8 h-8 text-green-500"></i></div></div>
-                    <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Nível Bateria</div><div class="text-2xl font-bold text-gray-900" id="card-bateria-nivel">${data.sistemas.Eletrico_NivelCarga || '--%'}</div><div class="text-sm text-gray-600" id="card-bateria-tempo">${data.sistemas.Eletrico_TempoRestante || 'N/A'}</div></div><i data-lucide="battery" class="w-8 h-8 text-blue-500"></i></div></div>
-                    <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-yellow-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Problemas Ativos</div><div class="text-2xl font-bold text-gray-900" id="card-problemas-total">${vg.ProblemasAtivos_Total || 0}</div><div class="text-xs text-gray-500" id="card-problemas-breakdown">(${vg.ProblemasAtivos_NaoConforme || 0} Não Conforme, ${vg.ProblemasAtivos_Atencao || 0} Atenção)</div></div><i data-lucide="alert-triangle" class="w-8 h-8 text-yellow-500"></i></div></div>
-                    <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Conformidade</div><div class="text-2xl font-bold text-gray-900" id="card-conformidade-perc">${vg.Conformidade_Percentual || '--%'}</div><div class="text-sm text-gray-600" id="card-conformidade-itens">${vg.Conformidade_Itens || 'N/A'}</div></div><i data-lucide="bar-chart-3" class="w-8 h-8 text-purple-500"></i></div></div>
+                    <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-green-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Última Verificação</div><div class="text-2xl font-bold text-gray-900">${vg.UltimaVerificacao_Horario || '--:--'}</div><div class="text-sm text-gray-600">${vg.UltimaVerificacao_Nome || 'N/A'}</div></div><i data-lucide="check-circle" class="w-8 h-8 text-green-500"></i></div></div>
+                    <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Nível Bateria</div><div class="text-2xl font-bold text-gray-900">${data.sistemas.Eletrico_NivelCarga || '--%'}</div><div class="text-sm text-gray-600">${data.sistemas.Eletrico_TempoRestante || 'N/A'}</div></div><i data-lucide="battery" class="w-8 h-8 text-blue-500"></i></div></div>
+                    <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-yellow-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Problemas Ativos</div><div class="text-2xl font-bold text-gray-900" id="card-problemas-total">${vg.ProblemasAtivos_Total || 0}</div><div class="text-xs text-gray-500">(${vg.ProblemasAtivos_NaoConforme || 0} NConforme, ${vg.ProblemasAtivos_Atencao || 0} Atenção)</div></div><i data-lucide="alert-triangle" class="w-8 h-8 text-yellow-500"></i></div></div>
+                    <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Conformidade</div><div class="text-2xl font-bold text-gray-900">${vg.Conformidade_Percentual || '--%'}</div><div class="text-sm text-gray-600">${vg.Conformidade_Itens || 'N/A'}</div></div><i data-lucide="bar-chart-3" class="w-8 h-8 text-purple-500"></i></div></div>
                 `;
                 if (vg.ProblemasAtivos_Total > 0) document.getElementById('card-problemas-total').classList.add('alert-blink');
 
@@ -169,49 +165,44 @@
                 console.error('Falha ao carregar dados:', error);
                 document.getElementById('header-nome').textContent = "Falha ao carregar";
                 document.getElementById('geral-status-badge').textContent = "ERRO";
-                document.getElementById('geral-status-badge').className = 'px-3 py-1 rounded-full text-sm font-medium text-red-800 bg-red-100';
             } finally {
                 lucide.createIcons();
             }
         }
-
-        function updateImplementosList(implementosData) {
+        
+        function updateImplementosList(data) {
             const container = document.getElementById('container-implementos');
             container.innerHTML = '';
-            if (implementosData && implementosData.length > 0) {
-                implementosData.forEach(item => {
-                    let statusColor = 'bg-gray-100 text-gray-800';
-                    const statusText = item.status ? item.status.toLowerCase() : '';
-                    if (statusText.includes('pendente')) statusColor = 'bg-yellow-100 text-yellow-800';
-                    else if (statusText.includes('instalado')) statusColor = 'bg-green-100 text-green-800';
-                    else if (statusText.includes('manutenção')) statusColor = 'bg-blue-100 text-blue-800';
-                    const html = `<div class="flex items-start justify-between p-4 border-b last:border-b-0"><div><p class="font-semibold text-gray-900">${item.implemento}</p><p class="text-sm text-gray-600">${item.observação || ''}</p></div><div class="px-3 py-1 rounded-full text-xs font-medium ${statusColor}">${item.status}</div></div>`;
-                    container.insertAdjacentHTML('beforeend', html);
+            if (data && data.length > 0) {
+                data.forEach(item => {
+                    let c = 'bg-gray-100 text-gray-800';
+                    const s = item.status ? item.status.toLowerCase() : '';
+                    if (s.includes('pendente')) c = 'bg-yellow-100 text-yellow-800';
+                    else if (s.includes('instalado')) c = 'bg-green-100 text-green-800';
+                    container.innerHTML += `<div class="flex items-start justify-between p-4 border-b last:border-b-0"><div><p class="font-semibold text-gray-900">${item.implemento}</p><p class="text-sm text-gray-600">${item.observação || ''}</p></div><div class="px-3 py-1 rounded-full text-xs font-medium ${c}">${item.status}</div></div>`;
                 });
             } else { container.innerHTML = '<p class="p-4 text-gray-500">Nenhum implemento cadastrado.</p>'; }
         }
         
-        function updateProblemsList(problemsData) {
+        function updateProblemsList(data) {
             const container = document.getElementById('container-problemas');
             container.innerHTML = '';
-            if (problemsData && problemsData.length > 0) {
-                problemsData.forEach(p => {
-                    const severidadeClass = p.Severidade === 'ALTA' ? 'border-red-500' : 'border-yellow-500';
-                    const severidadeBg = p.Severidade === 'ALTA' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800';
-                    const html = `<div class="bg-white rounded-lg shadow-sm p-6 border-l-4 ${severidadeClass}"><div class="flex items-start space-x-4"><i data-lucide="alert-triangle" class="w-5 h-5 text-yellow-600 mt-1"></i><div class="flex-1"><div class="flex items-center justify-between mb-2"><h3 class="text-lg font-semibold text-gray-900">${p.Titulo}</h3><div class="px-3 py-1 rounded-full text-sm font-medium ${severidadeBg}">${p.Severidade}</div></div><p class="text-gray-600 mb-3">${p.Descricao}</p><div class="flex items-center justify-between"><div class="text-sm text-gray-500">Detectado em: ${p.DetectadoEm}</div><div class="text-sm font-medium text-blue-600">Ação: ${p.Acao}</div></div></div></div></div>`;
-                    container.insertAdjacentHTML('beforeend', html);
+            if (data && data.length > 0) {
+                data.forEach(p => {
+                    const c = p.Severidade === 'ALTA' ? 'border-red-500' : 'border-yellow-500';
+                    const bg = p.Severidade === 'ALTA' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800';
+                    container.innerHTML += `<div class="bg-white rounded-lg shadow-sm p-6 border-l-4 ${c}"><div class="flex items-start space-x-4"><i data-lucide="alert-triangle" class="w-5 h-5 text-yellow-600 mt-1"></i><div class="flex-1"><div class="flex items-center justify-between mb-2"><h3 class="text-lg font-semibold text-gray-900">${p.Titulo}</h3><div class="px-3 py-1 rounded-full text-sm font-medium ${bg}">${p.Severidade}</div></div><p class="text-gray-600 mb-3">${p.Descricao}</p><div class="flex items-center justify-between"><div class="text-sm text-gray-500">Detectado em: ${p.DetectadoEm}</div><div class="text-sm font-medium text-blue-600">Ação: ${p.Acao}</div></div></div></div></div>`;
                 });
             } else { container.innerHTML = '<p class="text-gray-500">Nenhum problema detectado.</p>'; }
         }
         
-        function updateHistoryList(historyData) {
+        function updateHistoryList(data) {
             const container = document.getElementById('container-historico');
             container.innerHTML = '';
-            if(historyData && historyData.length > 0) {
-                 historyData.slice().reverse().forEach(h => {
-                    const statusClass = h.Status === 'APROVADO' ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
-                    const html = `<div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"><div class="flex items-center space-x-4"><i data-lucide="calendar" class="w-5 h-5 text-gray-600"></i><div><div class="font-medium text-gray-900">${h.Data}</div><div class="text-sm text-gray-600">${h.Responsavel}</div></div></div><div class="text-right"><div class="px-3 py-1 rounded-full text-sm font-medium ${statusClass}">${h.Status}</div><div class="text-sm text-gray-600 mt-1">${h.Conformidade}</div></div></div>`;
-                    container.insertAdjacentHTML('beforeend', html);
+            if(data && data.length > 0) {
+                 data.slice().reverse().forEach(h => {
+                    const c = h.Status === 'APROVADO' ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
+                    container.innerHTML += `<div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"><div class="flex items-center space-x-4"><i data-lucide="calendar" class="w-5 h-5 text-gray-600"></i><div><div class="font-medium text-gray-900">${h.Data}</div><div class="text-sm text-gray-600">${h.Responsavel}</div></div></div><div class="text-right"><div class="px-3 py-1 rounded-full text-sm font-medium ${c}">${h.Status}</div><div class="text-sm text-gray-600 mt-1">${h.Conformidade}</div></div></div>`;
                 });
             } else { container.innerHTML = '<p class="text-gray-500">Nenhum histórico encontrado.</p>'; }
         }
@@ -225,8 +216,8 @@
             if (monitoringChart) monitoringChart.destroy();
             monitoringChart = new Chart(ctx, {
                 type: 'line',
-                data: { labels: labels, datasets: [ { label: 'Conformidade Média (%)', data: conformityData, borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)', yAxisID: 'y', tension: 0.3 }, { label: 'Total de Problemas', data: problemsData, borderColor: '#16a34a', backgroundColor: 'rgba(22, 163, 74, 0.1)', yAxisID: 'y1', tension: 0.3 } ] },
-                options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: { y: { type: 'linear', position: 'left', title: { display: true, text: 'Conformidade (%)' }, min: 0, max: 100 }, y1: { type: 'linear', position: 'right', title: { display: true, text: 'Nº de Problemas' }, grid: { drawOnChartArea: false }, min: 0, ticks: { stepSize: 1 } } } }
+                data: { labels, datasets: [ { label: 'Conformidade Média (%)', data: conformityData, borderColor: '#2563eb', yAxisID: 'y' }, { label: 'Total de Problemas', data: problemsData, borderColor: '#16a34a', yAxisID: 'y1' } ] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: 100 }, y1: { position: 'right', grid: { drawOnChartArea: false }, min: 0, ticks: { stepSize: 1 } } } }
             });
         }
 
@@ -239,32 +230,24 @@
             const tabToShow = document.getElementById(`tab-${tabName}`);
             if (tabToShow) tabToShow.classList.remove('hidden');
 
-            document.querySelectorAll('.nav-item').forEach(item => { item.classList.remove('active'); item.classList.add('text-gray-700'); });
+            document.querySelectorAll('.nav-item').forEach(item => { item.classList.remove('active'); item.classList.add('text-gray-600'); });
             
-            let activeItem = event ? event.currentTarget : document.querySelector(`.nav-item[onclick*="'${tabName}'"]`);
-            if (activeItem) {
-                activeItem.classList.add('active');
-                activeItem.classList.remove('text-gray-700');
+            if (event) {
+                event.currentTarget.classList.add('active');
+                event.currentTarget.classList.remove('text-gray-600');
             }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const firstMachineButton = document.querySelector('.machine-tab');
+            const firstMachineButton = document.querySelector('.machine-selector-btn');
             switchMachine('yale', { currentTarget: firstMachineButton });
-            showTab('overview');
+            const firstNavButton = document.querySelector('.nav-item');
+            showTab('overview', { currentTarget: firstNavButton });
             lucide.createIcons();
-            setInterval(fetchDataAndUpdateDashboard, 20000); // 5 minutos
+            setInterval(fetchDataAndUpdateDashboard, 10000);
             updateTime();
-            setInterval(updateTime, 20000);
+            setInterval(updateTime, 1000);
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
