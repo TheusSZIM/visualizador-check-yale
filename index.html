@@ -253,13 +253,14 @@
             switchMachine('yale', { currentTarget: firstMachineButton });
             showTab('overview');
             lucide.createIcons();
-            setInterval(fetchDataAndUpdateDashboard, 100); // 5 minutos
+            setInterval(fetchDataAndUpdateDashboard, 1000); // 5 minutos
             updateTime();
             setInterval(updateTime, 1000);
         });
     </script>
 </body>
 </html>
+
 
 
 
