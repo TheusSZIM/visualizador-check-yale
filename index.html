@@ -52,7 +52,7 @@
                 </div>
                 <div class="flex-1">
                     <div class="mb-6">
-                        <div class="bg-white p-1.5 rounded-lg shadow-sm inline-flex items-center space-x-1">
+                        <div class="bg-white p-1.5 rounded-lg shadow-sm inline-flex items-center space-x-1 flex-wrap">
                              <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('overview', event)"><i data-lucide="home" class="w-4 h-4"></i><span>Visão Geral</span></button>
                              <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('manutencao', event)"><i data-lucide="wrench" class="w-4 h-4"></i><span>Manutenção</span></button>
                              <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('problems', event)"><i data-lucide="alert-triangle" class="w-4 h-4"></i><span>Problemas</span></button>
@@ -70,7 +70,7 @@
         </div>
     </div>
     <script>
-        const BASE_APP_URL = 'https://script.google.com/macros/s/AKfycby2aD7kypoFiDyVa8m4R4d6tQsmpeAYwAoRfs-WLHWwhqcCYEoRmeai7A8HeHwlsqDi0A/exec';
+        const BASE_APP_URL = 'https://script.google.com/macros/s/AKfycbx1e85PNaqjy7DhCgouQsLnXWlcgvE6Wsu6P9Gx4PjdAjTK6RBjgXEkEJL3Ijwx42wr7Q/exec';
         let currentMachineId = null;
         let monitoringChart = null;
         let allMachines = [];
@@ -93,7 +93,7 @@
                 const firstNavButton = document.querySelector('.nav-item');
                 showTab('overview', { currentTarget: firstNavButton });
                 
-                setInterval(fetchDataAndUpdateDashboard, 300000);
+                setInterval(fetchDataAndUpdateDashboard, 10000);
                 updateTime();
                 setInterval(updateTime, 1000);
             } catch (error) {
@@ -129,7 +129,8 @@
         async function fetchDataAndUpdateDashboard() {
             if (!currentMachineId) return;
             const overviewTab = document.getElementById('tab-overview');
-            overviewTab.innerHTML = '<div class="text-center p-10">Carregando dados...</div>';
+            overviewTab.innerHTML = '<div class="text-center p-10"><i data-lucide="loader-2" class="animate-spin h-8 w-8 mx-auto text-gray-400"></i><p class="text-gray-500 mt-2">Carregando dados...</p></div>';
+            lucide.createIcons();
             
             try {
                 const fullUrl = `${BASE_APP_URL}?machine=${currentMachineId}`;
@@ -146,7 +147,7 @@
                 
             } catch (error) {
                 console.error('Falha ao carregar dados:', error);
-                overviewTab.innerHTML = `<div class="text-center p-10 text-red-500">Falha ao carregar dados: ${error.message}</div>`;
+                overviewTab.innerHTML = `<div class="text-center p-10 text-red-500"><strong>Falha ao carregar dados:</strong><p class="text-sm mt-1">${error.message}</p></div>`;
                 document.getElementById('geral-status-badge').textContent = "ERRO";
             } finally {
                 lucide.createIcons();
@@ -186,25 +187,71 @@
                     <div class="relative h-96"><canvas id="monitoring-chart"></canvas></div>
                 </div>
             `;
-            document.getElementById('geral-status-badge').textContent = vg.StatusGeral;
-            const statusBadge = document.getElementById('geral-status-badge');
-            statusBadge.className = 'px-3 py-1 rounded-full text-sm font-medium ';
-            if (vg.StatusGeral === 'OPERACIONAL') { statusBadge.classList.add('text-green-600', 'bg-green-100'); }
-            else { statusBadge.classList.add('text-yellow-800', 'bg-yellow-100', 'alert-blink'); }
-            
+            statusBadge.textContent = vg.StatusGeral;
+            if (vg.StatusGeral === 'OPERACIONAL') { statusBadge.className = 'px-3 py-1 rounded-full text-sm font-medium text-green-600 bg-green-100'; }
+            else { statusBadge.className = 'px-3 py-1 rounded-full text-sm font-medium text-yellow-800 bg-yellow-100 alert-blink'; }
             updateChart(data.dailySummary);
         }
         
-        function updateManutencaoTab(data) { /* ... */ }
-        function updateProblemsList(data) { /* ... */ }
-        function updateHistoryList(data) { /* ... */ }
-        function updateChart(dailySummary) { /* ... */ }
+        function updateManutencaoTab(data) {
+            const tab = document.getElementById('tab-manutencao');
+            if(!data) { tab.innerHTML = '<p>Dados de manutenção indisponíveis.</p>'; return; }
+            tab.innerHTML = `<h2 class="text-2xl font-bold text-gray-900">Manutenção Programada</h2>
+                <div class="bg-white p-6 rounded-lg shadow-sm space-y-4">
+                    <div><h3 class="text-lg font-semibold text-gray-800">Troca de Óleo Hidráulico (a cada ${data.intervalo}h)</h3><p class="text-sm text-gray-500">Acompanhamento para a próxima troca.</p></div>
+                    <div class="w-full bg-gray-200 rounded-full h-6"><div id="progress-bar-oleo" class="h-6 rounded-full flex items-center justify-center text-white text-sm font-medium" style="width: ${data.progresso}%;">${data.progresso}%</div></div>
+                    <div class="flex justify-between text-sm font-medium text-gray-600"><span>Última troca: ${data.proximaTroca - data.intervalo}h</span><span>Próxima troca: ${data.proximaTroca}h</span></div>
+                    <div class="text-center text-gray-800">Horímetro atual: ${data.horimetroAtual}h. Faltam ${data.proximaTroca - data.horimetroAtual > 0 ? (data.proximaTroca - data.horimetroAtual).toFixed(0) : 0}h para a próxima manutenção.</div>
+                </div>`;
+            const progressBar = document.getElementById('progress-bar-oleo');
+            if (data.progresso >= 95) { progressBar.classList.add('bg-red-600'); }
+            else if (data.progresso >= 80) { progressBar.classList.add('bg-yellow-500'); }
+            else { progressBar.classList.add('bg-blue-600'); }
+        }
+
+        function updateProblemsList(data) {
+            const container = document.getElementById('container-problems');
+            container.innerHTML = '<h2 class="text-2xl font-bold text-gray-900 mb-4">Problemas Detectados</h2>';
+            if (data && data.length > 0) {
+                data.forEach(p => {
+                    const c = p.Severidade === 'ALTA' ? 'border-red-500' : 'border-yellow-500';
+                    const bg = p.Severidade === 'ALTA' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800';
+                    container.innerHTML += `<div class="bg-white rounded-lg shadow-sm p-6 border-l-4 ${c}"><div class="flex items-start space-x-4"><i data-lucide="alert-triangle" class="w-5 h-5 text-yellow-600 mt-1"></i><div class="flex-1"><div class="flex items-center justify-between mb-2"><h3 class="text-lg font-semibold text-gray-900">${p.Titulo}</h3><div class="px-3 py-1 rounded-full text-sm font-medium ${bg}">${p.Severidade}</div></div><p class="text-gray-600 mb-3">${p.Descricao}</p><div class="flex items-center justify-between"><div class="text-sm text-gray-500">Detectado em: ${p.DetectadoEm}</div><div class="text-sm font-medium text-blue-600">Ação: ${p.Acao}</div></div></div></div></div>`;
+                });
+            } else { container.innerHTML += '<div class="bg-white rounded-lg shadow-sm p-6"><p class="text-gray-500">Nenhum problema detectado.</p></div>'; }
+        }
+        
+        function updateHistoryList(data) {
+            const container = document.getElementById('container-historico');
+            container.innerHTML = '';
+            if(data && data.length > 0) {
+                 data.slice().reverse().forEach(h => {
+                    const c = h.Status === 'APROVADO' ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
+                    container.innerHTML += `<div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"><div class="flex items-center space-x-4"><i data-lucide="calendar" class="w-5 h-5 text-gray-600"></i><div><div class="font-medium text-gray-900">${h.Data}</div><div class="text-sm text-gray-600">${h.Responsavel}</div></div></div><div class="text-right"><div class="px-3 py-1 rounded-full text-sm font-medium ${c}">${h.Status}</div><div class="text-sm text-gray-600 mt-1">${h.Conformidade}</div></div></div>`;
+                });
+            } else { container.innerHTML = '<p class="text-gray-500">Nenhum histórico encontrado.</p>'; }
+        }
+
+        function updateChart(dailySummary) {
+            if (!dailySummary) return;
+            const labels = dailySummary.map(item => item.dateLabel);
+            const conformityData = dailySummary.map(item => item.averageConformity);
+            const problemsData = dailySummary.map(item => item.totalProblems);
+            const ctx = document.getElementById('monitoring-chart').getContext('2d');
+            if (monitoringChart) monitoringChart.destroy();
+            monitoringChart = new Chart(ctx, {
+                type: 'line',
+                data: { labels, datasets: [ { label: 'Conformidade Média (%)', data: conformityData, borderColor: '#2563eb', yAxisID: 'y', tension: 0.3 }, { label: 'Total de Problemas', data: problemsData, borderColor: '#16a34a', yAxisID: 'y1', tension: 0.3 } ] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: 100, title: { display: true, text: 'Conformidade (%)' } }, y1: { position: 'right', grid: { drawOnChartArea: false }, min: 0, ticks: { stepSize: 1 }, title: { display: true, text: 'Nº de Problemas' } } } }
+            });
+        }
+        
         function updateTime() { document.getElementById('current-time').textContent = new Date().toLocaleTimeString('pt-BR'); }
+        
         function showTab(tabName, event) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
             const tabToShow = document.getElementById(`tab-${tabName}`);
             if (tabToShow) tabToShow.classList.remove('hidden');
-
             document.querySelectorAll('.nav-item').forEach(item => { item.classList.remove('active'); item.classList.add('text-gray-600'); });
             if (event && event.currentTarget) {
                 event.currentTarget.classList.add('active');
