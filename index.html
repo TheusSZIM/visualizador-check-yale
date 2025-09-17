@@ -57,7 +57,7 @@
         </div>
     </div>
     <script>
-        const BASE_APP_URL = 'https://script.google.com/macros/s/AKfycbznKmtoYWWsLi9A0g8IC6qWdCdva5vexvyGj4-EMdVTNfz5qbyA9-VUHWn0xMCUdjDX_A/exec';
+        const BASE_APP_URL = 'https://script.google.com/macros/s/AKfycbxxxjhrvcqo4Kc43aoCTQ0CBwiMXh331Yn6iSgncGrliQhZKg8Bo5tJq7uiMe9B9rP64A/exec';
         let currentMachineId = null;
         let monitoringChart = null;
         let allMachines = [];
@@ -86,7 +86,7 @@
             } catch (error) {
                 console.error("Falha na inicialização:", error);
                 const overviewTab = document.getElementById('tab-overview');
-                overviewTab.innerHTML = `<div class="text-center p-10 text-red-500"><strong>Falha na Inicialização:</strong><p class="text-sm mt-1">${error.message}</p></div>`;
+                if(overviewTab) overviewTab.innerHTML = `<div class="text-center p-10 text-red-500"><strong>Falha na Inicialização:</strong><p class="text-sm mt-1">${error.message}</p></div>`;
                 document.getElementById('machine-name-subtitle').textContent = "Erro de Conexão";
                 document.getElementById('geral-status-badge').textContent = "ERRO";
             }
@@ -164,7 +164,7 @@
             else { statusBadge.className = 'px-3 py-1 rounded-full text-sm font-medium text-yellow-800 bg-yellow-100 alert-blink'; }
             
             updateChart(data.dailySummary);
-            lucide.createIcons(); // Recria os ícones após renderizar o HTML
+            lucide.createIcons();
         }
         
         function updateManutencaoTab(data) {
