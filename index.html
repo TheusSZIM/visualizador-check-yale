@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Sistema de Monitoramento</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -57,9 +56,8 @@
         </div>
     </div>
     <script>
-        const BASE_APP_URL = 'https://script.google.com/macros/s/AKfycbzPX_3WWmCEABaEatTUAkKO3XDdq8GHug6qig3iQqfY9W1OGgm1Jqsicxm-TL06RvYS5g/exec';
+        const BASE_APP_URL = 'https://script.google.com/macros/s/AKfycbzl9notq9f33Mb1L-y0wWCT3dmDTq0N8VHceza7z48nCv7OCWL4MSmy2Maddm8eFRtPvA/exec';
         let currentMachineId = null;
-        let monitoringChart = null;
         let allMachines = [];
 
         document.addEventListener('DOMContentLoaded', async function() {
@@ -80,7 +78,7 @@
                 const firstNavButton = document.querySelector('.nav-item');
                 showTab('overview', { currentTarget: firstNavButton });
                 
-                setInterval(fetchDataAndUpdateDashboard, 300000); // 5 minutos
+                setInterval(fetchDataAndUpdateDashboard, 10000); // ATUALIZADO PARA 10 SEGUNDOS
                 updateTime();
                 setInterval(updateTime, 1000);
             } catch (error) {
@@ -155,15 +153,13 @@
                     <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Nível Bateria</div><div class="text-2xl font-bold text-gray-900">${sistemas.Eletrico_NivelCarga || '--%'}</div><div class="text-sm text-gray-600">${sistemas.Eletrico_TempoRestante || 'N/A'}</div></div><i data-lucide="battery" class="w-8 h-8 text-blue-500"></i></div></div>
                     <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-yellow-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Problemas Ativos</div><div class="text-2xl font-bold text-gray-900 ${vg.ProblemasAtivos_Total > 0 ? 'alert-blink' : ''}">${vg.ProblemasAtivos_Total || 0}</div><div class="text-xs text-gray-500">(${vg.ProblemasAtivos_NaoConforme || 0} NConforme, ${vg.ProblemasAtivos_Atencao || 0} Atenção)</div></div><i data-lucide="alert-triangle" class="w-8 h-8 text-yellow-500"></i></div></div>
                     <div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Conformidade</div><div class="text-2xl font-bold text-gray-900">${vg.Conformidade_Percentual || '--%'}</div><div class="text-sm text-gray-600">${vg.Conformidade_Itens || 'N/A'}</div></div><i data-lucide="bar-chart-3" class="w-8 h-8 text-purple-500"></i></div></div>
-                </div>
-                <div class="bg-white rounded-lg shadow-sm p-6"><h3 class="text-lg font-semibold text-gray-900 mb-4">Resumo dos Últimos 7 Dias</h3><div class="relative h-96"><canvas id="monitoring-chart"></canvas></div></div>`;
+                </div>`;
             
             const statusBadge = document.getElementById('geral-status-badge');
             statusBadge.textContent = vg.StatusGeral;
             if (vg.StatusGeral === 'OPERACIONAL') { statusBadge.className = 'px-3 py-1 rounded-full text-sm font-medium text-green-600 bg-green-100'; }
             else { statusBadge.className = 'px-3 py-1 rounded-full text-sm font-medium text-yellow-800 bg-yellow-100 alert-blink'; }
             
-            updateChart(data.dailySummary);
             lucide.createIcons();
         }
         
@@ -211,24 +207,6 @@
         function updateChecklistTab(data) {
             const tab = document.getElementById('tab-checklist');
             tab.innerHTML = `<h2 class="text-2xl font-bold text-gray-900 mb-4">Checklist - ${data.NomeEquipamento || ''}</h2><div class="bg-white rounded-lg shadow-sm p-6"></div>`;
-        }
-        
-        function updateChart(dailySummary) {
-            const chartCanvas = document.getElementById('monitoring-chart');
-            if (!dailySummary || dailySummary.length === 0) {
-                if(chartCanvas) chartCanvas.style.display = 'none'; return;
-            }
-            if(chartCanvas) chartCanvas.style.display = 'block';
-            const labels = dailySummary.map(item => item.dateLabel);
-            const conformityData = dailySummary.map(item => item.averageConformity);
-            const problemsData = dailySummary.map(item => item.totalProblems);
-            const ctx = chartCanvas.getContext('2d');
-            if (monitoringChart) monitoringChart.destroy();
-            monitoringChart = new Chart(ctx, {
-                type: 'line',
-                data: { labels, datasets: [ { label: 'Conformidade Média (%)', data: conformityData, borderColor: '#2563eb', yAxisID: 'y', tension: 0.3 }, { label: 'Total de Problemas', data: problemsData, borderColor: '#16a34a', yAxisID: 'y1', tension: 0.3 } ] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: 100, title: { display: true, text: 'Conformidade (%)' } }, y1: { position: 'right', grid: { drawOnChartArea: false }, min: 0, ticks: { stepSize: 1 }, title: { display: true, text: 'Nº de Problemas' } } } }
-            });
         }
         
         function updateTime() { document.getElementById('current-time').textContent = new Date().toLocaleTimeString('pt-BR'); }
