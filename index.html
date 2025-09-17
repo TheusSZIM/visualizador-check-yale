@@ -57,7 +57,7 @@
         </div>
     </div>
     <script>
-        const BASE_APP_URL = 'https://script.google.com/macros/s/AKfycbzvJUaN8P5k-F7-JgXMV3FPZ5-EckQtbxP9Ey9yLI9DL6MemBOeqLrNisZoBWy0c38a7g/exec';
+        const BASE_APP_URL = 'https://script.google.com/macros/s/AKfycbx1cqwVeBGbNux43gqCXKy7H3YOjxNHNjd1StQba3xLIJcefT4Re3MbSMObOZaf8M5hmA/exec';
         let currentMachineId = null;
         let monitoringChart = null;
         let allMachines = [];
@@ -80,7 +80,7 @@
                 const firstNavButton = document.querySelector('.nav-item');
                 showTab('overview', { currentTarget: firstNavButton });
                 
-                setInterval(fetchDataAndUpdateDashboard, 300000);
+                setInterval(fetchDataAndUpdateDashboard, 300000); // 5 minutos
                 updateTime();
                 setInterval(updateTime, 1000);
             } catch (error) {
@@ -98,7 +98,7 @@
             machines.forEach(machine => {
                 const btn = document.createElement('button');
                 btn.className = 'machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700';
-                btn.textContent = machine.nomeApresentacao; // CORREÇÃO AQUI
+                btn.textContent = machine.nomeapresentacao;
                 btn.onclick = (event) => switchMachine(machine.id, event);
                 container.appendChild(btn);
             });
@@ -108,7 +108,7 @@
             currentMachineId = machineId;
             const machineConfig = allMachines.find(m => m.id === machineId);
             if(machineConfig) {
-                const newTheme = `theme-${machineConfig.corTema || 'azul'}`; // CORREÇÃO AQUI
+                const newTheme = `theme-${machineConfig.cortema || 'azul'}`;
                 document.getElementById('dashboard-container').className = newTheme;
             }
             document.querySelectorAll('.machine-selector-btn').forEach(btn => btn.classList.remove('active'));
