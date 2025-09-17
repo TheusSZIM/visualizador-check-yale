@@ -80,7 +80,7 @@
                 const firstNavButton = document.querySelector('.nav-item');
                 showTab('overview', { currentTarget: firstNavButton });
                 
-                setInterval(fetchDataAndUpdateDashboard, 300000); // 5 minutos
+                setInterval(fetchDataAndUpdateDashboard, 300000);
                 updateTime();
                 setInterval(updateTime, 1000);
             } catch (error) {
@@ -98,7 +98,7 @@
             machines.forEach(machine => {
                 const btn = document.createElement('button');
                 btn.className = 'machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700';
-                btn.textContent = machine.nomeapresentacao;
+                btn.textContent = machine.nomeApresentacao; // CORREÇÃO AQUI
                 btn.onclick = (event) => switchMachine(machine.id, event);
                 container.appendChild(btn);
             });
@@ -108,7 +108,7 @@
             currentMachineId = machineId;
             const machineConfig = allMachines.find(m => m.id === machineId);
             if(machineConfig) {
-                const newTheme = `theme-${machineConfig.cortema || 'azul'}`;
+                const newTheme = `theme-${machineConfig.corTema || 'azul'}`; // CORREÇÃO AQUI
                 document.getElementById('dashboard-container').className = newTheme;
             }
             document.querySelectorAll('.machine-selector-btn').forEach(btn => btn.classList.remove('active'));
