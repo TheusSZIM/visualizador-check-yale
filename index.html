@@ -18,6 +18,14 @@
         .theme-externa .active { background-color: #f59e0b; color: white; }
         .theme-externa .header-bg { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); }
         .theme-externa #machine-icon-bg { background-color: #f59e0b; }
+        /* NOVO TEMA: LARANJA (HYSTER) */
+        .theme-hyster .active { background-color: #f97316; color: white; } /* Cor Laranja */
+        .theme-hyster .header-bg { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); }
+        .theme-hyster #machine-icon-bg { background-color: #f97316; }
+        /* NOVO TEMA: VERMELHO (STILL) */
+        .theme-still .active { background-color: #dc2626; color: white; } /* Cor Vermelha */
+        .theme-still .header-bg { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); }
+        .theme-still #machine-icon-bg { background-color: #dc2626; }
         .alert-blink { animation: blink 2s infinite; }
         @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0.5; } }
     </style>
@@ -54,17 +62,19 @@
                     <nav class="space-y-2">
                          <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('yale', event)">Yale MR16</button>
                          <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('externa', event)">Empilhadeira Externa</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('hyster', event)">Hyster</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still', event)">Still</button>
                     </nav>
                 </div>
                 
                 <div class="flex-1">
                     <div class="mb-6">
                         <div class="bg-white p-1.5 rounded-lg shadow-sm inline-flex items-center space-x-1">
-                             <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('overview', event)"><i data-lucide="home" class="w-4 h-4"></i><span>Visão Geral</span></button>
-                             <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('implementos', event)"><i data-lucide="wrench" class="w-4 h-4"></i><span>Implementos</span></button>
-                             <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('problems', event)"><i data-lucide="alert-triangle" class="w-4 h-4"></i><span>Problemas</span></button>
-                             <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('history', event)"><i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Histórico</span></button>
-                             <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('checklist', event)"><i data-lucide="file-text" class="w-4 h-4"></i><span>Checklist</span></button>
+                              <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('overview', event)"><i data-lucide="home" class="w-4 h-4"></i><span>Visão Geral</span></button>
+                              <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('implementos', event)"><i data-lucide="wrench" class="w-4 h-4"></i><span>Implementos</span></button>
+                              <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('problems', event)"><i data-lucide="alert-triangle" class="w-4 h-4"></i><span>Problemas</span></button>
+                              <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('history', event)"><i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Histórico</span></button>
+                              <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('checklist', event)"><i data-lucide="file-text" class="w-4 h-4"></i><span>Checklist</span></button>
                         </div>
                     </div>
 
@@ -84,7 +94,7 @@
                                     <div class="text-2xl font-bold" id="header-horimetro">--h</div>
                                     <div class="opacity-80 text-sm" id="header-status">Status: ...</div>
                                 </div>
-                            </div>
+                           </div>
                         </div>
                         <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
                         <div class="bg-white rounded-lg shadow-sm p-6">
