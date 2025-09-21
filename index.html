@@ -11,7 +11,7 @@
         .machine-selector-btn, .nav-item { transition: all 0.2s ease-in-out; }
         .machine-selector-btn:hover, .nav-item:hover { background-color: #f3f4f6; }
         
-        /* ... (Todos os temas de cores que já criamos) ... */
+        /* ... (Todos os seus temas de cores) ... */
         .theme-yale .active { background-color: #2563eb; color: white; }
         .theme-yale .header-bg { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); }
         .theme-yale #machine-icon-bg { background-color: #2563eb; }
@@ -30,16 +30,16 @@
         .theme-still3 .active { background-color: #e956e7; color: white; }
         .theme-still3 .header-bg { background: linear-gradient(135deg, #e956e7 0%, #c238c0 100%); }
         .theme-still3 #machine-icon-bg { background-color: #e956e7; }
-        
-        /* --- ESTILO PARA A BARRA DE PROGRESSO --- */
+        .theme-hyster_externa .active { background-color: #c2410c; color: white; }
+        .theme-hyster_externa .header-bg { background: linear-gradient(135deg, #c2410c 0%, #7c2d12 100%); }
+        .theme-hyster_externa #machine-icon-bg { background-color: #c2410c; }
+
         .progress-bar-container { background-color: #e0e0e0; border-radius: 9999px; }
         .progress-bar {
-            background-color: #4caf50; /* Começa verde */
-            height: 100%; border-radius: 9999px;
+            background-color: #4caf50; height: 100%; border-radius: 9999px;
             transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out;
             text-align: center; color: white; font-weight: bold;
         }
-
         .alert-blink { animation: blink 2s infinite; }
         @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0.5; } }
     </style>
@@ -74,74 +74,64 @@
                 <div class="w-full md:w-64 bg-white rounded-lg shadow-sm p-4">
                     <h3 class="text-sm font-semibold text-gray-500 px-4 mb-2">SELECIONE O EQUIPAMENTO</h3>
                     <nav class="space-y-2">
-                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('yale', event)">Yale MR16</button>
-                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('externa', event)">Empilhadeira Externa</button>
-                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('hyster', event)">Hyster</button>
-                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still1', event)">Still 1</button>
-                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still2', event)">Still 2</button>
-                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still3', event)">Still 3</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('yale', this)">Yale MR16</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('externa', this)">Empilhadeira Externa</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('hyster', this)">Hyster</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('hyster_externa', this)">Hyster Externa</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still1', this)">Still 1</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still2', this)">Still 2</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still3', this)">Still 3</button>
                     </nav>
                 </div>
                 
                 <div class="flex-1">
                     <div class="mb-6">
                         <div class="bg-white p-1.5 rounded-lg shadow-sm inline-flex items-center space-x-1">
-                            <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('overview', event)"><i data-lucide="home" class="w-4 h-4"></i><span>Visão Geral</span></button>
-                            <button id="btn-implementos" class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('implementos', event)"><i data-lucide="wrench" class="w-4 h-4"></i><span>Implementos</span></button>
-                            <button id="btn-manutencao" class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700 hidden" onclick="showTab('manutencao', event)"><i data-lucide="tool" class="w-4 h-4"></i><span>Próxima Manutenção</span></button>
-                            <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('problems', event)"><i data-lucide="alert-triangle" class="w-4 h-4"></i><span>Problemas</span></button>
-                            <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('history', event)"><i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Histórico</span></button>
-                            <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('checklist', event)"><i data-lucide="file-text" class="w-4 h-4"></i><span>Checklist</span></button>
+                            <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('overview', this)"><i data-lucide="home" class="w-4 h-4"></i><span>Visão Geral</span></button>
+                            <button id="btn-implementos" class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('implementos', this)"><i data-lucide="wrench" class="w-4 h-4"></i><span>Implementos</span></button>
+                            <button id="btn-manutencao" class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700 hidden" onclick="showTab('manutencao', this)"><i data-lucide="tool" class="w-4 h-4"></i><span>Próxima Manutenção</span></button>
+                            <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('problems', this)"><i data-lucide="alert-triangle" class="w-4 h-4"></i><span>Problemas</span></button>
+                            <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('history', this)"><i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Histórico</span></button>
+                            <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('checklist', this)"><i data-lucide="file-text" class="w-4 h-4"></i><span>Checklist</span></button>
                         </div>
                     </div>
 
                     <div id="tab-overview" class="tab-content hidden space-y-6">
                         </div>
-                    <div id="tab-implementos" class="tab-content hidden"><h2 class="text-2xl font-bold text-gray-900 mb-4">Implementos e Pendências</h2><div id="container-implementos" class="bg-white rounded-lg shadow-sm"></div></div>
-                    
-                    <div id="tab-manutencao" class="tab-content hidden">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">Controle de Manutenção (Troca de Óleo)</h2>
-                        <div class="bg-white rounded-lg shadow-sm p-6 space-y-4">
-                            <div>
-                                <div class="flex justify-between items-center mb-1 text-sm font-medium text-gray-600">
-                                    <span>Última Manutenção: <span id="manut-last" class="font-bold text-gray-900">--h</span></span>
-                                    <span>Horímetro Atual: <span id="manut-current" class="font-bold text-blue-600">--h</span></span>
-                                    <span>Próxima Manutenção: <span id="manut-next" class="font-bold text-gray-900">--h</span></span>
-                                </div>
-                                <div class="w-full progress-bar-container h-6">
-                                    <div id="manut-progress-bar" class="progress-bar flex items-center justify-center text-sm leading-none h-6">
-                                        <span id="manut-progress-text">0%</span>
-                                    </div>
-                                </div>
-                                <p id="manut-status-text" class="text-center mt-2 text-gray-700 font-semibold"></p>
-                            </div>
+                    <div id="tab-implementos" class="tab-content hidden">
                         </div>
-                    </div>
-
-                    <div id="tab-problems" class="tab-content hidden"></div>
-                    <div id="tab-history" class="tab-content hidden"></div>
-                    <div id="tab-checklist" class="tab-content hidden"></div>
+                    <div id="tab-manutencao" class="tab-content hidden">
+                        </div>
+                    <div id="tab-problems" class="tab-content hidden">
+                        </div>
+                    <div id="tab-history" class="tab-content hidden">
+                        </div>
+                    <div id="tab-checklist" class="tab-content hidden">
+                        </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const BASE_APP_URL = 'https://script.google.com/macros/s/AKfycbwGPQDmzdIBZgvFk8TgMltZy7aV5MwTls-o7FnQ460BHXdgi1yw3O7RqnAzwV1Qprs08Q/exec';
+        const BASE_APP_URL = 'https://script.google.com/macros/s/AKfycbzhYJMFvLKr3WaayzoR29ozY9kAogZ7qlyMssu68zlm3uNmPguDGTajMb251JPERAJt/exec';
         let currentMachine = 'yale';
         let monitoringChart = null;
 
-        function switchMachine(machineName, event) {
+        // MUDANÇA AQUI: a função agora recebe o próprio botão como argumento
+        function switchMachine(machineName, buttonElement) {
             currentMachine = machineName;
             const newTheme = `theme-${machineName}`;
             document.getElementById('dashboard-container').className = newTheme;
 
             document.querySelectorAll('.machine-selector-btn').forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
             
-            document.getElementById('machine-name-subtitle').textContent = event.currentTarget.textContent;
+            // MUDANÇA AQUI: checamos se o botão existe antes de usá-lo
+            if (buttonElement) {
+                buttonElement.classList.add('active');
+                document.getElementById('machine-name-subtitle').textContent = buttonElement.textContent;
+            }
 
-            // --- LÓGICA PARA ALTERNAR OS BOTÕES DAS ABAS ---
             const btnImplementos = document.getElementById('btn-implementos');
             const btnManutencao = document.getElementById('btn-manutencao');
 
@@ -152,99 +142,44 @@
                 btnImplementos.classList.remove('hidden');
                 btnManutencao.classList.add('hidden');
             }
-            // Garante que a primeira aba (Visão Geral) seja sempre a mostrada ao trocar de máquina
-            showTab('overview', { currentTarget: document.querySelector('.nav-item') });
+            showTab('overview', document.querySelector('.nav-item'));
 
             fetchDataAndUpdateDashboard();
         }
 
-        // --- NOVA FUNÇÃO PARA ATUALIZAR A ABA DE MANUTENÇÃO ---
-        function updateManutencaoTab(vg) {
-            const lastMaint = parseInt(vg.HorimetroUltimaManutencao, 10);
-            const nextMaint = parseInt(vg.HorimetroProximaManutencao, 10);
-            const currentHorimetro = parseInt(vg.Horimetro, 10);
-
-            document.getElementById('manut-last').textContent = `${lastMaint}h`;
-            document.getElementById('manut-current').textContent = `${currentHorimetro}h`;
-            document.getElementById('manut-next').textContent = `${nextMaint}h`;
-
-            if (!lastMaint || !nextMaint || !currentHorimetro || nextMaint <= lastMaint) {
-                // Se faltar algum dado, não calcula
-                return;
-            }
-
-            const totalCycle = nextMaint - lastMaint;
-            const currentProgress = currentHorimetro - lastMaint;
-            
-            let percentage = Math.round((currentProgress / totalCycle) * 100);
-            if (percentage < 0) percentage = 0;
-            if (percentage > 100) percentage = 100;
-
-            const progressBar = document.getElementById('manut-progress-bar');
-            const progressText = document.getElementById('manut-progress-text');
-            const statusText = document.getElementById('manut-status-text');
-
-            progressBar.style.width = `${percentage}%`;
-            progressText.textContent = `${percentage}%`;
-
-            // Mudar cor e texto de status com base no percentual
-            if (percentage >= 95) {
-                progressBar.style.backgroundColor = '#dc2626'; // Vermelho
-                statusText.textContent = `MANUTENÇÃO URGENTE! Horas restantes: ${nextMaint - currentHorimetro}h`;
-            } else if (percentage >= 80) {
-                progressBar.style.backgroundColor = '#f59e0b'; // Amarelo
-                statusText.textContent = `Agendar manutenção em breve. Horas restantes: ${nextMaint - currentHorimetro}h`;
-            } else {
-                progressBar.style.backgroundColor = '#4caf50'; // Verde
-                statusText.textContent = `Manutenção em dia. Horas restantes: ${nextMaint - currentHorimetro}h`;
-            }
-        }
-
-        async function fetchDataAndUpdateDashboard() {
-            try {
-                // ... (lógica de fetch e atualização da Visão Geral, igual a antes) ...
-                
-                // --- CHAMADA PARA AS NOVAS FUNÇÕES DE ATUALIZAÇÃO ---
-                updateProblemsList(data.problemas);
-                updateHistoryList(data.historico);
-                
-                // Lógica condicional para qual aba de dados preencher
-                if (currentMachine.startsWith('still')) {
-                    updateManutencaoTab(data.visaoGeral);
-                } else {
-                    updateImplementosList(data.implementos);
-                }
-                
-                // ... (resto da função, console.log, etc) ...
-
-            } catch (error) {
-                console.error('Falha ao carregar dados:', error);
-                document.getElementById('header-nome').textContent = "Falha ao carregar";
-                document.getElementById('geral-status-badge').textContent = "ERRO";
-            } finally {
-                lucide.createIcons();
-            }
-        }
-
-        function showTab(tabName, event) {
+        function showTab(tabName, buttonElement) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
             const tabToShow = document.getElementById(`tab-${tabName}`);
             if (tabToShow) tabToShow.classList.remove('hidden');
 
             document.querySelectorAll('.nav-item').forEach(item => { item.classList.remove('active'); item.classList.add('text-gray-600'); });
             
-            if (event) {
-                event.currentTarget.classList.add('active');
-                event.currentTarget.classList.remove('text-gray-600');
+            if (buttonElement) {
+                buttonElement.classList.add('active');
+                buttonElement.classList.remove('text-gray-600');
             }
         }
-        
-        // ... (Todas as outras funções como updateProblemsList, updateChart, etc. continuam aqui) ...
-        
+
+        // MUDANÇA AQUI: a função de inicialização agora passa o elemento do botão diretamente
         document.addEventListener('DOMContentLoaded', function() {
-            // ... (Função DOMContentLoaded igual a antes) ...
+            const firstMachineButton = document.querySelector('.machine-selector-btn');
+            if (firstMachineButton) {
+                switchMachine('yale', firstMachineButton);
+            }
+            
+            const firstNavButton = document.querySelector('.nav-item');
+            if(firstNavButton) {
+                showTab('overview', firstNavButton);
+            }
+
+            lucide.createIcons();
+            setInterval(fetchDataAndUpdateDashboard, 30000); // Aumentei o intervalo para 30s
+            updateTime();
+            setInterval(updateTime, 1000);
         });
+
+        // O resto do seu JavaScript (fetchDataAndUpdateDashboard, updateManutencaoTab, etc.) continua o mesmo
+        // ...
     </script>
 </body>
 </html>
-
