@@ -10,22 +10,27 @@
     <style>
         .machine-selector-btn, .nav-item { transition: all 0.2s ease-in-out; }
         .machine-selector-btn:hover, .nav-item:hover { background-color: #f3f4f6; }
+        
         /* TEMA AZUL (YALE) */
         .theme-yale .active { background-color: #2563eb; color: white; }
         .theme-yale .header-bg { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); }
         .theme-yale #machine-icon-bg { background-color: #2563eb; }
+        
         /* TEMA AMARELO (EXTERNA) */
         .theme-externa .active { background-color: #f59e0b; color: white; }
         .theme-externa .header-bg { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); }
         .theme-externa #machine-icon-bg { background-color: #f59e0b; }
-        /* NOVO TEMA: LARANJA (HYSTER) */
-        .theme-hyster .active { background-color: #f97316; color: white; } /* Cor Laranja */
+        
+        /* TEMA LARANJA (HYSTER) */
+        .theme-hyster .active { background-color: #f97316; color: white; }
         .theme-hyster .header-bg { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); }
         .theme-hyster #machine-icon-bg { background-color: #f97316; }
-        /* NOVO TEMA: VERMELHO (STILL) */
-        .theme-still .active { background-color: #dc2626; color: white; } /* Cor Vermelha */
-        .theme-still .header-bg { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); }
-        .theme-still #machine-icon-bg { background-color: #dc2626; }
+        
+        /* TEMAS VERMELHOS PARA AS EMPILHADEIRAS STILL */
+        .theme-still1 .active, .theme-still2 .active, .theme-still3 .active { background-color: #dc2626; color: white; }
+        .theme-still1 .header-bg, .theme-still2 .header-bg, .theme-still3 .header-bg { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); }
+        .theme-still1 #machine-icon-bg, .theme-still2 #machine-icon-bg, .theme-still3 #machine-icon-bg { background-color: #dc2626; }
+        
         .alert-blink { animation: blink 2s infinite; }
         @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0.5; } }
     </style>
@@ -63,7 +68,9 @@
                          <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('yale', event)">Yale MR16</button>
                          <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('externa', event)">Empilhadeira Externa</button>
                          <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('hyster', event)">Hyster</button>
-                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still', event)">Still</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still1', event)">Still 1</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still2', event)">Still 2</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still3', event)">Still 3</button>
                     </nav>
                 </div>
                 
@@ -261,5 +268,3 @@
     </script>
 </body>
 </html>
-
-
