@@ -1,81 +1,81 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Login - Sistema Check</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
 
-  <!-- CDN OFICIAL DESCOPE -->
-  <script src="https://cdn.descope.com/web-components/latest/index.js"></script>
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f2f2f2;
+    font-family: Arial, sans-serif;
+}
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #f3f4f6;
-      font-family: Arial, sans-serif;
-    }
+.login-box {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    width: 300px;
+    text-align: center;
+}
 
-    .card {
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      width: 360px;
-      text-align: center;
-    }
+h2 {
+    margin-bottom: 20px;
+}
 
-    h2 {
-      margin-bottom: 20px;
-    }
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
 
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-  </style>
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #4CAF50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #45a049;
+}
+</style>
 </head>
+
 <body>
 
-  <div class="card">
+<div class="login-box">
     <h2>Acesso ao Sistema</h2>
+    <input type="text" id="user" placeholder="Usuário">
+    <input type="password" id="pass" placeholder="Senha">
+    <button onclick="login()">Entrar</button>
+</div>
 
-    <descope-wc
-      id="descope"
-      project-id="P39xNb625S2MYNXEBC1I6wmA6qWL"
-      flow-id="sign-up-or-in"
-      theme="light">
-    </descope-wc>
+<script>
+function login() {
+    const user = document.getElementById("user").value;
+    const pass = document.getElementById("pass").value;
 
-  </div>
-
-  <script>
-    const el = document.getElementById("descope");
-
-    // Se já estiver logado, vai direto para dashboard
-    if (localStorage.getItem("session")) {
-      window.location.href = "dashboard.html";
+    if (user === "admin" && pass === "123") {
+        localStorage.setItem("auth", "true");
+        window.location.href = "dashboard.html";
+    } else {
+        alert("Usuário ou senha inválidos");
     }
-
-    el.addEventListener("success", (e) => {
-      console.log("Login OK");
-
-      localStorage.setItem("session", e.detail.sessionJwt);
-      localStorage.setItem("user", JSON.stringify(e.detail.user));
-
-      window.location.href = "dashboard.html";
-    });
-
-    el.addEventListener("error", (e) => {
-      console.error("Erro login:", e.detail);
-    });
-  </script>
+}
+</script>
 
 </body>
 </html>
