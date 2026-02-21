@@ -1,205 +1,346 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Dashboard - Sistema de Monitoramento</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema de Monitoramento</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .machine-selector-btn, .nav-item { transition: all 0.2s ease-in-out; }
+        .machine-selector-btn:hover, .nav-item:hover { background-color: #f3f4f6; }
+        
+        /* TEMAS DE CORES PARA AS EMPILHADEIRAS */
+        .theme-yale .active { background-color: #2563eb; color: white; }
+        .theme-yale .header-bg { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); }
+        .theme-yale #machine-icon-bg { background-color: #2563eb; }
 
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        .theme-externa .active { background-color: #f59e0b; color: white; }
+        .theme-externa .header-bg { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); }
+        .theme-externa #machine-icon-bg { background-color: #f59e0b; }
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f9;
-}
+        .theme-hyster .active { background-color: #f97316; color: white; }
+        .theme-hyster .header-bg { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); }
+        .theme-hyster #machine-icon-bg { background-color: #f97316; }
 
-header {
-    background-color: #2c3e50;
-    color: white;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        .theme-still1 .active { background-color: #dc2626; color: white; }
+        .theme-still1 .header-bg { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); }
+        .theme-still1 #machine-icon-bg { background-color: #dc2626; }
 
-header h2 {
-    margin: 0;
-}
+        .theme-still2 .active { background-color: #4caf50; color: white; }
+        .theme-still2 .header-bg { background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%); }
+        .theme-still2 #machine-icon-bg { background-color: #4caf50; }
 
-.logout-btn {
-    background-color: #e74c3c;
-    border: none;
-    padding: 8px 14px;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.container {
-    padding: 20px;
-}
-
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin-bottom: 30px;
-}
-
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
-}
-
-.card h3 {
-    margin: 0 0 10px 0;
-    font-size: 16px;
-    color: #555;
-}
-
-.card p {
-    font-size: 22px;
-    margin: 0;
-    font-weight: bold;
-}
-
-.chart-container {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
-}
-
-th {
-    background-color: #34495e;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.status-ok {
-    color: green;
-    font-weight: bold;
-}
-
-.status-alerta {
-    color: red;
-    font-weight: bold;
-}
-</style>
+        .theme-still3 .active { background-color: #e956e7; color: white; }
+        .theme-still3 .header-bg { background: linear-gradient(135deg, #e956e7 0%, #c238c0 100%); }
+        .theme-still3 #machine-icon-bg { background-color: #e956e7; }
+        
+        .progress-bar-container { background-color: #e0e0e0; border-radius: 9999px; }
+        .progress-bar {
+            background-color: #4caf50; height: 100%; border-radius: 9999px;
+            transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out;
+            text-align: center; color: white; font-weight: bold;
+        }
+        .alert-blink { animation: blink 2s infinite; }
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0.5; } }
+    </style>
 </head>
-<body>
-
-<header>
-    <h2>Dashboard</h2>
-    <button class="logout-btn" onclick="logout()">Sair</button>
-</header>
-
-<div class="container">
-
-    <h1>Sistema de Monitoramento</h1>
-
-    <div class="cards">
-        <div class="card">
-            <h3>Servidores Ativos</h3>
-            <p>12</p>
+<body class="min-h-screen bg-gray-50">
+    <div id="dashboard-container">
+        <div class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 py-2">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div id="machine-icon-bg" class="w-10 h-10 rounded-lg flex items-center justify-center">
+                            <i data-lucide="truck" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold text-gray-900">Dashboard</h1>
+                            <p class="text-gray-600" id="machine-name-subtitle">Carregando...</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right">
+                            <div class="text-sm text-gray-500">Atualizado:</div>
+                            <div class="font-semibold text-gray-900" id="current-time">--:--:--</div>
+                        </div>
+                        <div class="px-3 py-1 rounded-full text-sm font-medium" id="geral-status-badge">...</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h3>Alertas Hoje</h3>
-            <p>3</p>
-        </div>
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
+                <div class="w-full md:w-64 bg-white rounded-lg shadow-sm p-4">
+                    <h3 class="text-sm font-semibold text-gray-500 px-4 mb-2">SELECIONE O EQUIPAMENTO</h3>
+                    <nav class="space-y-2">
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('yale', this)">Yale MR16</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('externa', this)">Empilhadeira Externa</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('hyster', this)">Hyster</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still1', this)">Still 1</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still2', this)">Still 2</button>
+                         <button class="machine-selector-btn w-full px-4 py-3 rounded-md text-sm font-medium flex items-center justify-center text-gray-700" onclick="switchMachine('still3', this)">Still 3</button>
+                    </nav>
+                </div>
+                
+                <div class="flex-1">
+                    <div class="mb-6">
+                        <div class="bg-white p-1.5 rounded-lg shadow-sm inline-flex items-center space-x-1">
+                            <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('overview', this)"><i data-lucide="home" class="w-4 h-4"></i><span>Visão Geral</span></button>
+                            <button id="btn-implementos" class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('implementos', this)"><i data-lucide="wrench" class="w-4 h-4"></i><span>Implementos</span></button>
+                            <button id="btn-manutencao" class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700 hidden" onclick="showTab('manutencao', this)"><i data-lucide="tool" class="w-4 h-4"></i><span>Próxima Manutenção</span></button>
+                            <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('problems', this)"><i data-lucide="alert-triangle" class="w-4 h-4"></i><span>Problemas</span></button>
+                            <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('history', this)"><i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Histórico</span></button>
+                            <button class="nav-item px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 text-gray-700" onclick="showTab('checklist', this)"><i data-lucide="file-text" class="w-4 h-4"></i><span>Checklist</span></button>
+                        </div>
+                    </div>
 
-        <div class="card">
-            <h3>Usuários Online</h3>
-            <p>27</p>
-        </div>
+                    <div id="tab-overview" class="tab-content hidden space-y-6">
+                        <div class="header-bg rounded-lg shadow-lg p-6 text-white">
+                           <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-lg flex items-center justify-center"><i data-lucide="truck" class="w-8 h-8 text-white"></i></div>
+                                    <div>
+                                        <h1 class="text-3xl font-bold" id="header-nome">Carregando...</h1>
+                                        <p class="opacity-80" id="header-serie">Série: ...</p>
+                                        <p class="opacity-80" id="header-local">Localização: ...</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="opacity-80 text-sm">Horímetro</div>
+                                    <div class="text-2xl font-bold" id="header-horimetro">--h</div>
+                                    <div class="opacity-80 text-sm" id="header-status">Status: ...</div>
+                                </div>
+                           </div>
+                        </div>
+                        <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Resumo dos Últimos 7 Dias</h3>
+                            <div class="relative h-96"><canvas id="monitoring-chart"></canvas></div>
+                        </div>
+                    </div>
+                    <div id="tab-implementos" class="tab-content hidden"><h2 class="text-2xl font-bold text-gray-900 mb-4">Implementos e Pendências</h2><div id="container-implementos" class="bg-white rounded-lg shadow-sm"></div></div>
+                    
+                    <div id="tab-manutencao" class="tab-content hidden">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-4">Controle de Manutenção (Troca de Óleo)</h2>
+                        <div class="bg-white rounded-lg shadow-sm p-6 space-y-4">
+                            <div>
+                                <div class="flex justify-between items-center mb-1 text-sm font-medium text-gray-600">
+                                    <span>Última Manutenção: <span id="manut-last" class="font-bold text-gray-900">--h</span></span>
+                                    <span>Horímetro Atual: <span id="manut-current" class="font-bold text-blue-600">--h</span></span>
+                                    <span>Próxima Manutenção: <span id="manut-next" class="font-bold text-gray-900">--h</span></span>
+                                </div>
+                                <div class="w-full progress-bar-container h-6">
+                                    <div id="manut-progress-bar" class="progress-bar flex items-center justify-center text-sm leading-none h-6">
+                                        <span id="manut-progress-text">0%</span>
+                                    </div>
+                                </div>
+                                <p id="manut-status-text" class="text-center mt-2 text-gray-700 font-semibold"></p>
+                            </div>
+                        </div>
+                    </div>
 
-        <div class="card">
-            <h3>Uso de CPU Médio</h3>
-            <p>64%</p>
+                    <div id="tab-problems" class="tab-content hidden"><h2 class="text-2xl font-bold text-gray-900 mb-4">Problemas Detectados</h2><div id="container-problemas" class="grid grid-cols-1 gap-4"></div></div>
+                    <div id="tab-history" class="tab-content hidden"><h2 class="text-2xl font-bold text-gray-900 mb-4">Histórico de Verificações</h2><div id="container-historico" class="space-y-4 bg-white rounded-lg shadow-sm p-6"></div></div>
+                    <div id="tab-checklist" class="tab-content hidden"><h2 class="text-2xl font-bold text-gray-900 mb-4">Checklist</h2><div class="bg-white rounded-lg shadow-sm p-6"></div></div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="chart-container">
-        <h3>Uso de CPU (Últimos 7 dias)</h3>
-        <canvas id="cpuChart"></canvas>
-    </div>
+    <script>
+        const BASE_APP_URL = 'https://script.google.com/macros/s/AKfycbxz-d2dxjmrWTWo92gJm2g3-0jDeXt4n86im5D3YZQ0AhONrOQhbzS2W9_hp7J3FB3e2w/exec';
+        let currentMachine = 'yale';
+        let monitoringChart = null;
 
-    <h3>Lista de Servidores</h3>
+        function switchMachine(machineName, buttonElement) {
+            currentMachine = machineName;
+            const newTheme = `theme-${machineName}`;
+            document.getElementById('dashboard-container').className = newTheme;
+            document.querySelectorAll('.machine-selector-btn').forEach(btn => btn.classList.remove('active'));
+            if (buttonElement) {
+                buttonElement.classList.add('active');
+                document.getElementById('machine-name-subtitle').textContent = buttonElement.textContent;
+            }
+            const btnImplementos = document.getElementById('btn-implementos');
+            const btnManutencao = document.getElementById('btn-manutencao');
+            if (machineName.startsWith('still')) {
+                btnImplementos.classList.add('hidden');
+                btnManutencao.classList.remove('hidden');
+            } else {
+                btnImplementos.classList.remove('hidden');
+                btnManutencao.classList.add('hidden');
+            }
+            showTab('overview', document.querySelector('.nav-item'));
+            fetchDataAndUpdateDashboard();
+        }
 
-    <table>
-        <tr>
-            <th>Servidor</th>
-            <th>Status</th>
-            <th>CPU</th>
-            <th>Memória</th>
-        </tr>
-        <tr>
-            <td>Servidor 01</td>
-            <td class="status-ok">Online</td>
-            <td>55%</td>
-            <td>70%</td>
-        </tr>
-        <tr>
-            <td>Servidor 02</td>
-            <td class="status-alerta">Alerta</td>
-            <td>92%</td>
-            <td>88%</td>
-        </tr>
-        <tr>
-            <td>Servidor 03</td>
-            <td class="status-ok">Online</td>
-            <td>43%</td>
-            <td>60%</td>
-        </tr>
-    </table>
+        function updateManutencaoTab(vg) {
+            const lastMaint = parseInt(vg.HorimetroUltimaManutencao, 10);
+            const nextMaint = parseInt(vg.HorimetroProximaManutencao, 10);
+            const currentHorimetro = parseInt(vg.Horimetro, 10);
+            const progressBar = document.getElementById('manut-progress-bar');
+            const progressText = document.getElementById('manut-progress-text');
+            const statusText = document.getElementById('manut-status-text');
+            if (isNaN(lastMaint) || isNaN(nextMaint) || isNaN(currentHorimetro) || nextMaint <= lastMaint) {
+                statusText.textContent = 'Dados de manutenção indisponíveis ou inválidos.';
+                progressBar.style.width = '100%';
+                progressText.textContent = 'N/A';
+                progressBar.style.backgroundColor = '#a0aec0';
+                return;
+            }
+            document.getElementById('manut-last').textContent = `${lastMaint}h`;
+            document.getElementById('manut-current').textContent = `${currentHorimetro}h`;
+            document.getElementById('manut-next').textContent = `${nextMaint}h`;
+            const totalCycle = nextMaint - lastMaint;
+            const currentProgress = currentHorimetro - lastMaint;
+            let percentage = Math.round((currentProgress / totalCycle) * 100);
+            if (percentage < 0) percentage = 0;
+            if (percentage > 100) percentage = 100;
+            progressBar.style.width = `${percentage}%`;
+            progressText.textContent = `${percentage}%`;
+            const horasRestantes = nextMaint - currentHorimetro;
+            if (percentage >= 95) {
+                progressBar.style.backgroundColor = '#dc2626';
+                statusText.textContent = `MANUTENÇÃO URGENTE! ${horasRestantes > 0 ? `Restam ${horasRestantes}h.` : 'Horímetro ultrapassado.'}`;
+            } else if (percentage >= 80) {
+                progressBar.style.backgroundColor = '#f59e0b';
+                statusText.textContent = `Agendar manutenção em breve. Restam ${horasRestantes}h.`;
+            } else {
+                progressBar.style.backgroundColor = '#4caf50';
+                statusText.textContent = `Manutenção em dia. Restam ${horasRestantes}h.`;
+            }
+        }
 
-</div>
+        async function fetchDataAndUpdateDashboard() {
+            try {
+                const fullUrl = `${BASE_APP_URL}?machine=${currentMachine}`;
+                document.getElementById('geral-status-badge').textContent = 'CARREGANDO...';
+                document.getElementById('header-nome').textContent = 'Carregando...';
+                const response = await fetch(fullUrl);
+                if (!response.ok) throw new Error(`Erro na rede: ${response.statusText}`);
+                const data = await response.json();
+                if (data.error) throw new Error(`Erro no script: ${data.error}`);
+                const vg = data.visaoGeral;
+                document.getElementById('header-nome').textContent = vg.NomeEquipamento || 'N/A';
+                document.getElementById('header-serie').textContent = `Série: ${vg.Serie || 'N/A'}`;
+                document.getElementById('header-local').textContent = `Localização: ${vg.Localizacao || 'N/A'}`;
+                document.getElementById('header-horimetro').textContent = vg.Horimetro || '--h';
+                document.getElementById('header-status').textContent = `Status: ${vg.StatusGeral || 'N/A'}`;
+                const statusBadge = document.getElementById('geral-status-badge');
+                statusBadge.textContent = vg.StatusGeral;
+                statusBadge.className = 'px-3 py-1 rounded-full text-sm font-medium ';
+                if (vg.StatusGeral === 'OPERACIONAL') {
+                    statusBadge.classList.add('text-green-600', 'bg-green-100');
+                } else {
+                    statusBadge.classList.add('text-yellow-800', 'bg-yellow-100', 'alert-blink');
+                }
+                const cardsContainer = document.getElementById('cards-container');
+                cardsContainer.innerHTML = `<div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-green-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Última Verificação</div><div class="text-2xl font-bold text-gray-900">${vg.UltimaVerificacao_Horario || '--:--'}</div><div class="text-sm text-gray-600">${vg.UltimaVerificacao_Nome || 'N/A'}</div></div><i data-lucide="check-circle" class="w-8 h-8 text-green-500"></i></div></div><div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Nível Bateria</div><div class="text-2xl font-bold text-gray-900">${data.sistemas.Eletrico_NivelCarga || '--%'}</div><div class="text-sm text-gray-600">${data.sistemas.Eletrico_TempoRestante || 'N/A'}</div></div><i data-lucide="battery" class="w-8 h-8 text-blue-500"></i></div></div><div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-yellow-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Problemas Ativos</div><div class="text-2xl font-bold text-gray-900" id="card-problemas-total">${vg.ProblemasAtivos_Total || 0}</div><div class="text-xs text-gray-500">(${vg.ProblemasAtivos_NaoConforme || 0} NConforme, ${vg.ProblemasAtivos_Atencao || 0} Atenção)</div></div><i data-lucide="alert-triangle" class="w-8 h-8 text-yellow-500"></i></div></div><div class="status-card bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500"><div class="flex items-center justify-between"><div><div class="text-sm font-medium text-gray-500">Conformidade</div><div class="text-2xl font-bold text-gray-900">${vg.Conformidade_Percentual || '--%'}</div><div class="text-sm text-gray-600">${vg.Conformidade_Itens || 'N/A'}</div></div><i data-lucide="bar-chart-3" class="w-8 h-8 text-purple-500"></i></div></div>`;
+                if (vg.ProblemasAtivos_Total > 0) document.getElementById('card-problemas-total').classList.add('alert-blink');
+                updateChart(data.dailySummary);
+                updateProblemsList(data.problemas);
+                updateHistoryList(data.historico);
+                if (currentMachine.startsWith('still')) {
+                    updateManutencaoTab(data.visaoGeral);
+                } else {
+                    updateImplementosList(data.implementos);
+                }
+                console.log('Dashboard atualizado com sucesso!', data);
+            } catch (error) {
+                console.error('Falha ao carregar dados:', error);
+                document.getElementById('header-nome').textContent = "Falha ao carregar";
+                document.getElementById('geral-status-badge').textContent = "ERRO";
+            } finally {
+                lucide.createIcons();
+            }
+        }
+        
+        function updateImplementosList(data) {
+            const container = document.getElementById('container-implementos');
+            container.innerHTML = '';
+            if (data && data.length > 0) {
+                data.forEach(item => {
+                    let c = 'bg-gray-100 text-gray-800';
+                    const s = item.status ? item.status.toLowerCase() : '';
+                    if (s.includes('pendente')) c = 'bg-yellow-100 text-yellow-800';
+                    else if (s.includes('instalado')) c = 'bg-green-100 text-green-800';
+                    container.innerHTML += `<div class="flex items-start justify-between p-4 border-b last:border-b-0"><div><p class="font-semibold text-gray-900">${item.implemento}</p><p class="text-sm text-gray-600">${item.observação || ''}</p></div><div class="px-3 py-1 rounded-full text-xs font-medium ${c}">${item.status}</div></div>`;
+                });
+            } else { container.innerHTML = '<p class="p-4 text-gray-500">Nenhum implemento cadastrado.</p>'; }
+        }
+        
+        function updateProblemsList(data) {
+            const container = document.getElementById('container-problemas');
+            container.innerHTML = '';
+            if (data && data.length > 0) {
+                data.forEach(p => {
+                    const c = p.Severidade === 'ALTA' ? 'border-red-500' : 'border-yellow-500';
+                    const bg = p.Severidade === 'ALTA' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800';
+                    container.innerHTML += `<div class="bg-white rounded-lg shadow-sm p-6 border-l-4 ${c}"><div class="flex items-start space-x-4"><i data-lucide="alert-triangle" class="w-5 h-5 text-yellow-600 mt-1"></i><div class="flex-1"><div class="flex items-center justify-between mb-2"><h3 class="text-lg font-semibold text-gray-900">${p.Titulo}</h3><div class="px-3 py-1 rounded-full text-sm font-medium ${bg}">${p.Severidade}</div></div><p class="text-gray-600 mb-3">${p.Descricao}</p><div class="flex items-center justify-between"><div class="text-sm text-gray-500">Detectado em: ${p.DetectadoEm}</div><div class="text-sm font-medium text-blue-600">Ação: ${p.Acao}</div></div></div></div></div>`;
+                });
+            } else { container.innerHTML = '<p class="p-4 text-gray-500">Nenhum problema detectado.</p>'; }
+        }
+        
+        function updateHistoryList(data) {
+            const container = document.getElementById('container-historico');
+            container.innerHTML = '';
+            if(data && data.length > 0) {
+                 data.slice().reverse().forEach(h => {
+                    const c = h.Status === 'APROVADO' ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
+                    container.innerHTML += `<div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg"><div class="flex items-center space-x-4"><i data-lucide="calendar" class="w-5 h-5 text-gray-600"></i><div><div class="font-medium text-gray-900">${h.Data}</div><div class="text-sm text-gray-600">${h.Responsavel}</div></div></div><div class="text-right"><div class="px-3 py-1 rounded-full text-sm font-medium ${c}">${h.Status}</div><div class="text-sm text-gray-600 mt-1">${h.Conformidade}</div></div></div>`;
+                });
+            } else { container.innerHTML = '<p class="p-4 text-gray-500">Nenhum histórico encontrado.</p>'; }
+        }
 
-<script>
-function logout() {
-    window.location.href = "index.html";
-}
+        function updateChart(dailySummary) {
+            if (!dailySummary) return;
+            const labels = dailySummary.map(item => item.dateLabel);
+            const conformityData = dailySummary.map(item => item.averageConformity);
+            const problemsData = dailySummary.map(item => item.totalProblems);
+            const ctx = document.getElementById('monitoring-chart').getContext('2d');
+            if (monitoringChart) monitoringChart.destroy();
+            monitoringChart = new Chart(ctx, {
+                type: 'line',
+                data: { labels, datasets: [ { label: 'Conformidade Média (%)', data: conformityData, borderColor: '#2563eb', yAxisID: 'y' }, { label: 'Total de Problemas', data: problemsData, borderColor: '#16a34a', yAxisID: 'y1' } ] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: 100 }, y1: { position: 'right', grid: { drawOnChartArea: false }, min: 0, ticks: { stepSize: 1 } } } }
+            });
+        }
 
-const ctx = document.getElementById('cpuChart');
+        function updateTime() {
+            const timeElement = document.getElementById('current-time');
+            if (timeElement) {
+                timeElement.textContent = new Date().toLocaleTimeString('pt-BR');
+            }
+        }
 
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-        datasets: [{
-            label: 'CPU %',
-            data: [45, 59, 60, 75, 80, 65, 70],
-            borderWidth: 2,
-            fill: false
-        }]
-    },
-    options: {
-        responsive: true
-    }
-});
-</script>
+        function showTab(tabName, buttonElement) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            const tabToShow = document.getElementById(`tab-${tabName}`);
+            if (tabToShow) tabToShow.classList.remove('hidden');
+            document.querySelectorAll('.nav-item').forEach(item => { item.classList.remove('active'); item.classList.add('text-gray-600'); });
+            if (buttonElement) {
+                buttonElement.classList.add('active');
+                buttonElement.classList.remove('text-gray-600');
+            }
+        }
 
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstMachineButton = document.querySelector('.machine-selector-btn');
+            if (firstMachineButton) {
+                switchMachine('yale', firstMachineButton);
+            }
+            const firstNavButton = document.querySelector('.nav-item');
+            if(firstNavButton) {
+                showTab('overview', firstNavButton);
+            }
+            lucide.createIcons();
+            setInterval(fetchDataAndUpdateDashboard, 30000);
+            updateTime();
+            setInterval(updateTime, 1000);
+        });
+    </script>
 </body>
 </html>
