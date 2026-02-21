@@ -1,62 +1,204 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - Sistema de Monitoramento</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-
-<script>
-if (localStorage.getItem("auth") !== "true") {
-    window.location.href = "index.html";
-}
-</script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-.machine-selector-btn, .nav-item { transition: all 0.2s ease-in-out; }
-.machine-selector-btn:hover, .nav-item:hover { background-color: #f3f4f6; }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+}
 
-.theme-yale .active { background-color: #2563eb; color: white; }
-.theme-yale .header-bg { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); }
-.theme-yale #machine-icon-bg { background-color: #2563eb; }
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-.progress-bar-container { background-color: #e0e0e0; border-radius: 9999px; }
-.progress-bar {
-    background-color: #4caf50;
-    height: 100%;
-    border-radius: 9999px;
+header h2 {
+    margin: 0;
+}
+
+.logout-btn {
+    background-color: #e74c3c;
+    border: none;
+    padding: 8px 14px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.container {
+    padding: 20px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.card p {
+    font-size: 22px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.chart-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #34495e;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.status-ok {
+    color: green;
+    font-weight: bold;
+}
+
+.status-alerta {
+    color: red;
+    font-weight: bold;
 }
 </style>
 </head>
+<body>
 
-<body class="min-h-screen bg-gray-50">
+<header>
+    <h2>Dashboard</h2>
+    <button class="logout-btn" onclick="logout()">Sair</button>
+</header>
 
-<div id="dashboard-container" class="theme-yale">
+<div class="container">
 
-<div class="bg-white shadow-sm border-b">
-<div class="max-w-7xl mx-auto px-4 py-2 flex justify-between">
-<h1 class="text-xl font-bold">Dashboard</h1>
-<button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded">Sair</button>
-</div>
-</div>
+    <h1>Sistema de Monitoramento</h1>
 
-<div class="max-w-7xl mx-auto px-4 py-6">
-<div class="bg-white p-6 rounded shadow">
-<h2 class="text-2xl font-bold mb-4">Sistema de Monitoramento</h2>
-<p>Dashboard carregado com sucesso.</p>
-</div>
-</div>
+    <div class="cards">
+        <div class="card">
+            <h3>Servidores Ativos</h3>
+            <p>12</p>
+        </div>
+
+        <div class="card">
+            <h3>Alertas Hoje</h3>
+            <p>3</p>
+        </div>
+
+        <div class="card">
+            <h3>Usuários Online</h3>
+            <p>27</p>
+        </div>
+
+        <div class="card">
+            <h3>Uso de CPU Médio</h3>
+            <p>64%</p>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <h3>Uso de CPU (Últimos 7 dias)</h3>
+        <canvas id="cpuChart"></canvas>
+    </div>
+
+    <h3>Lista de Servidores</h3>
+
+    <table>
+        <tr>
+            <th>Servidor</th>
+            <th>Status</th>
+            <th>CPU</th>
+            <th>Memória</th>
+        </tr>
+        <tr>
+            <td>Servidor 01</td>
+            <td class="status-ok">Online</td>
+            <td>55%</td>
+            <td>70%</td>
+        </tr>
+        <tr>
+            <td>Servidor 02</td>
+            <td class="status-alerta">Alerta</td>
+            <td>92%</td>
+            <td>88%</td>
+        </tr>
+        <tr>
+            <td>Servidor 03</td>
+            <td class="status-ok">Online</td>
+            <td>43%</td>
+            <td>60%</td>
+        </tr>
+    </table>
 
 </div>
 
 <script>
 function logout() {
-    localStorage.removeItem("auth");
     window.location.href = "index.html";
 }
+
+const ctx = document.getElementById('cpuChart');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+        datasets: [{
+            label: 'CPU %',
+            data: [45, 59, 60, 75, 80, 65, 70],
+            borderWidth: 2,
+            fill: false
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
 </script>
 
 </body>
