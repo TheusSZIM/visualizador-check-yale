@@ -1,141 +1,81 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Sistema de Monitoramento</title>
+  <meta charset="UTF-8">
+  <title>Login - Sistema Check</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <!-- CDN OFICIAL DESCOPE -->
+  <script src="https://cdn.descope.com/web-components/latest/index.js"></script>
 
-    <!-- DESCOPE LOGIN -->
-    <script src="https://descope.com/npm/@descope/web-component@3/dist/index.js"></script>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f3f4f6;
+      font-family: Arial, sans-serif;
+    }
 
-    <style>
-        .machine-selector-btn, .nav-item { transition: all 0.2s ease-in-out; }
-        .machine-selector-btn:hover, .nav-item:hover { background-color: #f3f4f6; }
-        .progress-bar-container { background-color: #e0e0e0; border-radius: 9999px; }
-        .progress-bar { background-color: #4caf50; height: 100%; border-radius: 9999px; }
-        .alert-blink { animation: blink 2s infinite; }
-        @keyframes blink { 0%,50%{opacity:1;} 51%,100%{opacity:0.5;} }
-    </style>
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      width: 360px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
 </head>
+<body>
 
-<body class="min-h-screen bg-gray-50">
+  <div class="card">
+    <h2>Acesso ao Sistema</h2>
 
-<!-- ================= LOGIN ================= -->
-<div id="login-screen" class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-md">
-        <h2 class="text-2xl font-bold text-center mb-6">Acesso ao Sistema</h2>
+    <descope-wc
+      id="descope"
+      project-id="P39xNb625S2MYNXEBC1I6wmA6qWL"
+      flow-id="sign-up-or-in"
+      theme="light">
+    </descope-wc>
 
-        <descope-wc
-            project-id="P39xNb625S2MYNXEBC1I6wmA6qWL"
-            flow-id="sign-up-or-in"
-            theme="light">
-        </descope-wc>
-    </div>
-</div>
+  </div>
 
-<!-- ================= DASHBOARD ================= -->
-<div id="dashboard-container" style="display:none;">
+  <script>
+    const el = document.getElementById("descope");
 
-    <!-- HEADER -->
-    <div class="bg-white shadow-sm border-b">
-        <div class="max-w-7xl mx-auto px-4 py-2">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <div id="machine-icon-bg" class="w-10 h-10 rounded-lg flex items-center justify-center bg-blue-600">
-                        <i data-lucide="truck" class="w-6 h-6 text-white"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold text-gray-900">Dashboard</h1>
-                        <p class="text-gray-600" id="machine-name-subtitle">Carregando...</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center space-x-6">
-                    <div class="text-right">
-                        <div class="text-sm text-gray-500">Atualizado:</div>
-                        <div class="font-semibold text-gray-900" id="current-time">--:--:--</div>
-                    </div>
-
-                    <div id="geral-status-badge" class="px-3 py-1 rounded-full text-sm font-medium">...</div>
-
-                    <div class="text-sm text-gray-600" id="user-email"></div>
-
-                    <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
-                        Sair
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================= SEU DASHBOARD ORIGINAL ================= -->
-    <!-- A partir daqui mantive sua estrutura original -->
-    <div class="max-w-7xl mx-auto px-4 py-6">
-        <div class="text-center text-gray-500 py-20">
-            Seu dashboard continua aqui exatamente como você enviou.<br>
-            Toda sua lógica de máquinas, gráficos e atualização automática permanece funcionando.
-        </div>
-    </div>
-</div>
-
-<!-- ================= AUTENTICAÇÃO ================= -->
-<script>
-const loginScreen = document.getElementById("login-screen");
-const dashboard = document.getElementById("dashboard-container");
-const userEmailSpan = document.getElementById("user-email");
-
-function checkSession() {
-    const token = localStorage.getItem("session");
-    const user = localStorage.getItem("user");
-
-    if (token) {
-        loginScreen.style.display = "none";
-        dashboard.style.display = "block";
-
-        if (user) {
-            const parsedUser = JSON.parse(user);
-            userEmailSpan.innerText = parsedUser.email;
-        }
-
-    } else {
-        loginScreen.style.display = "flex";
-        dashboard.style.display = "none";
-    }
-}
-
-function logout() {
-    localStorage.removeItem("session");
-    localStorage.removeItem("user");
-    location.reload();
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const wc = document.querySelector("descope-wc");
-
-    if (wc) {
-        wc.addEventListener("success", (e) => {
-            const jwt = e.detail.sessionJwt;
-            const user = e.detail.user;
-
-            localStorage.setItem("session", jwt);
-            localStorage.setItem("user", JSON.stringify(user));
-
-            checkSession();
-        });
-
-        wc.addEventListener("error", (err) => {
-            console.error("Erro login:", err);
-        });
+    // Se já estiver logado, vai direto para dashboard
+    if (localStorage.getItem("session")) {
+      window.location.href = "dashboard.html";
     }
 
-    checkSession();
-});
-</script>
+    el.addEventListener("success", (e) => {
+      console.log("Login OK");
+
+      localStorage.setItem("session", e.detail.sessionJwt);
+      localStorage.setItem("user", JSON.stringify(e.detail.user));
+
+      window.location.href = "dashboard.html";
+    });
+
+    el.addEventListener("error", (e) => {
+      console.error("Erro login:", e.detail);
+    });
+  </script>
 
 </body>
 </html>
