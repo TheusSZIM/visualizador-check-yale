@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Sistema Check</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: #f9fafb;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #ef4444;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <script>
+    // 🔐 Proteção de rota
+    if (!localStorage.getItem("session")) {
+      window.location.href = "index.html";
+    }
+  </script>
+
+  <div class="topbar">
+    <h2>Dashboard</h2>
+    <div>
+      <span id="user-email"></span>
+      <button onclick="logout()">Sair</button>
+    </div>
+  </div>
+
+  <p>Seu dashboard está protegido 🔒</p>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.email) {
+      document.getElementById("user-email").innerText = user.email;
+    }
+
+    function logout() {
+      localStorage.removeItem("session");
+      localStorage.removeItem("user");
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
+</html>
