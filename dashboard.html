@@ -1,66 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard - Sistema Check</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 40px;
-      background: #f9fafb;
-    }
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+}
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-    }
+header {
+    background: #4CAF50;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    button {
-      padding: 8px 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      background: #ef4444;
-      color: white;
-    }
-  </style>
+button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+}
+</style>
 </head>
+
 <body>
 
-  <script>
-    // 🔐 Proteção de rota
-    if (!localStorage.getItem("session")) {
-      window.location.href = "index.html";
-    }
-  </script>
+<header>
+    <h3>Dashboard</h3>
+    <button onclick="logout()">Sair</button>
+</header>
 
-  <div class="topbar">
-    <h2>Dashboard</h2>
-    <div>
-      <span id="user-email"></span>
-      <button onclick="logout()">Sair</button>
-    </div>
-  </div>
+<div style="padding: 30px;">
+    <h2>Bem-vindo ao sistema!</h2>
+    <p>Você está logado com sucesso.</p>
+</div>
 
-  <p>Seu dashboard está protegido 🔒</p>
+<script>
+if (localStorage.getItem("auth") !== "true") {
+    window.location.href = "index.html";
+}
 
-  <script>
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.email) {
-      document.getElementById("user-email").innerText = user.email;
-    }
-
-    function logout() {
-      localStorage.removeItem("session");
-      localStorage.removeItem("user");
-      window.location.href = "index.html";
-    }
-  </script>
+function logout() {
+    localStorage.removeItem("auth");
+    window.location.href = "index.html";
+}
+</script>
 
 </body>
 </html>
