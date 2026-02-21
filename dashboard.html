@@ -3,51 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard</title>
+<title>Dashboard - Sistema de Monitoramento</title>
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
-}
-
-header {
-    background: #4CAF50;
-    color: white;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-button {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 6px;
-    background: white;
-    cursor: pointer;
-}
-</style>
-</head>
-
-<body>
-
-<header>
-    <h3>Dashboard</h3>
-    <button onclick="logout()">Sair</button>
-</header>
-
-<div style="padding: 30px;">
-    <h2>Bem-vindo ao sistema!</h2>
-    <p>Você está logado com sucesso.</p>
-</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 
 <script>
 if (localStorage.getItem("auth") !== "true") {
     window.location.href = "index.html";
 }
+</script>
 
+<style>
+.machine-selector-btn, .nav-item { transition: all 0.2s ease-in-out; }
+.machine-selector-btn:hover, .nav-item:hover { background-color: #f3f4f6; }
+
+.theme-yale .active { background-color: #2563eb; color: white; }
+.theme-yale .header-bg { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); }
+.theme-yale #machine-icon-bg { background-color: #2563eb; }
+
+.progress-bar-container { background-color: #e0e0e0; border-radius: 9999px; }
+.progress-bar {
+    background-color: #4caf50;
+    height: 100%;
+    border-radius: 9999px;
+}
+</style>
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+<div id="dashboard-container" class="theme-yale">
+
+<div class="bg-white shadow-sm border-b">
+<div class="max-w-7xl mx-auto px-4 py-2 flex justify-between">
+<h1 class="text-xl font-bold">Dashboard</h1>
+<button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded">Sair</button>
+</div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 py-6">
+<div class="bg-white p-6 rounded shadow">
+<h2 class="text-2xl font-bold mb-4">Sistema de Monitoramento</h2>
+<p>Dashboard carregado com sucesso.</p>
+</div>
+</div>
+
+</div>
+
+<script>
 function logout() {
     localStorage.removeItem("auth");
     window.location.href = "index.html";
